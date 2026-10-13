@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>No Más Confirma | Invitaciones Digitales</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.25);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(-45deg, #41295a, #2F0743, #1f0430, #ff416c);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #ffffff;
+            overflow-x: hidden;
+            /* Scrollbar estándar para Firefox */
+            scrollbar-width: thin;
+            scrollbar-color: #ff416c rgba(255,255,255,0.05);
+        }
+
+        /* --- Custom Webkit Scrollbar (Chrome, Safari, Edge) --- */
+        ::-webkit-scrollbar {
+            width: 10px; /* Barra delgada y estética */
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3); /* Fondo oscuro semitransparente */
+            backdrop-filter: blur(10px);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #ff4b2b, #ff416c); /* Gradiente vibrante */
+            border-radius: 10px; /* Bordes redondeados */
+            border: 2px solid rgba(0,0,0,0.3); /* Separación para dar efecto flotante */
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, #ff416c, #ff4b2b); /* Inversión al pasar el mouse */
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Glassmorphism Classes */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+        }
+
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        /* Animations */
+        .fade-in { animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        .slide-up { animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards; opacity: 0; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Mini Phone Mockup for Examples */
+        .phone-mockup {
+            width: 140px;
+            height: 280px;
+            border-radius: 24px;
+            border: 6px solid #1a1a1a;
+            background: #000;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+        
+        .phone-notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 15px;
+            background: #1a1a1a;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            z-index: 10;
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 10px;
+        }
+
+        /* View switching */
+        .view-section {
+            display: none;
+            min-height: 100vh;
+        }
+        .view-section.active {
+            display: flex;
+        }
+        
+        /* Floating shapes for visual depth */
+        .shape { position: fixed; filter: blur(50px); z-index: -1; }
+        .shape-1 { top: -10%; left: -10%; width: 400px; height: 400px; background: rgba(255, 65, 108, 0.4); border-radius: 50%; }
+        .shape-2 { bottom: -10%; right: -10%; width: 500px; height: 500px; background: rgba(65, 41, 90, 0.6); border-radius: 50%; }
+        .shape-3 { top: 40%; left: 30%; width: 300px; height: 300px; background: rgba(255, 181, 167, 0.2); border-radius: 50%; }
+    </style>
+</head>
+<body class="antialiased min-h-screen relative">
+
+    <!-- Background Shapes -->
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+
+    <nav class="fixed w-full z-50 glass px-6 py-4 top-0">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="showView('home-view')">
+                <i class="fa-solid fa-paper-plane text-2xl text-pink-400"></i>
+                <h1 class="text-xl md:text-2xl font-bold tracking-tight">No Más <span class="text-pink-400">Confirma</span></h1>
+            </div>
+            <div class="flex items-center gap-2 md:gap-3">
+                <!-- Botón DM Instagram -->
+                <a href="https://ig.me/m/usuario_de_prueba" target="_blank" title="Enviar Mensaje Directo" class="glass-card px-3 md:px-4 py-2 rounded-full font-semibold text-xs md:text-sm hover:bg-pink-500 hover:border-pink-400 transition-all duration-300 flex items-center gap-2">
+                    <i class="fa-regular fa-paper-plane text-pink-300 md:text-lg"></i> <span class="hidden sm:inline">Mensaje</span>
+                </a>
+                <!-- Botón Perfil Instagram -->
+                <a href="https://instagram.com/usuario_de_prueba" target="_blank" title="Visitar Perfil" class="glass-card px-3 md:px-4 py-2 rounded-full font-semibold text-xs md:text-sm hover:bg-gradient-to-tr hover:from-yellow-400 hover:via-pink-500 hover:to-purple-600 hover:border-transparent transition-all duration-300 flex items-center gap-2 group">
+                    <i class="fa-brands fa-instagram text-white md:text-lg group-hover:scale-110 transition-transform"></i> <span class="hidden sm:inline">Instagram</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main id="home-view" class="view-section active flex-col pt-24 pb-12 px-4 md:px-8 max-w-7xl mx-auto fade-in">
+        <!-- Hero Section -->
+        <div class="text-center mt-10 md:mt-16 mb-16 slide-up" style="animation-delay: 0.1s;">
+            <h2 class="text-4xl md:text-6xl lg:text-7xl font-extrabold mb-4 leading-tight">
+                Olvida el papel, <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-orange-400">vive la experiencia.</span>
+            </h2>
+            <p class="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto mb-8 font-light">
+                Invitaciones digitales interactivas para que tus invitados digan <strong>"Sí, voy"</strong> en un solo clic. ¿Qué tipo de evento celebras hoy?
+            </p>
+        </div>
+
+        <!-- Vitrina (Grid de Servicios) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 slide-up" style="animation-delay: 0.3s;">
+            
+            <!-- Item: Boda -->
+            <div onclick="openCategory('bodas')" class="glass-card rounded-3xl p-8 cursor-pointer flex flex-col items-center text-center group">
+                <div class="w-20 h-20 rounded-full glass flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                    <i class="fa-solid fa-ring text-3xl text-yellow-300 drop-shadow-[0_0_10px_rgba(253,224,71,0.8)]"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">Bodas</h3>
+                <p class="text-sm text-gray-300">Elegancia y control total. Mesa de regalos, mapas y confirmación inmediata.</p>
+            </div>
+
+            <!-- Item: Cumpleaños -->
+            <div onclick="openCategory('cumpleanos')" class="glass-card rounded-3xl p-8 cursor-pointer flex flex-col items-center text-center group">
+                <div class="w-20 h-20 rounded-full glass flex items-center justify-center mb-4 group-hover:scale-110 group-hover:-rotate-6 transition-all duration-300">
+                    <i class="fa-solid fa-cake-candles text-3xl text-pink-300 drop-shadow-[0_0_10px_rgba(244,114,182,0.8)]"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">Cumpleaños</h3>
+                <p class="text-sm text-gray-300">Divertidas, con música de fondo y cuenta regresiva para la fiesta.</p>
+            </div>
+
+            <!-- Item: Despedidas -->
+            <div onclick="openCategory('despedidas')" class="glass-card rounded-3xl p-8 cursor-pointer flex flex-col items-center text-center group">
+                <div class="w-20 h-20 rounded-full glass flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                    <i class="fa-solid fa-martini-glass-citrus text-3xl text-purple-300 drop-shadow-[0_0_10px_rgba(216,180,254,0.8)]"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">Despedidas</h3>
+                <p class="text-sm text-gray-300">Diseños atrevidos y dinámicos para solteros y solteras. ¡Que empiece el caos!</p>
+            </div>
+
+            <!-- Item: Graduaciones -->
+            <div onclick="openCategory('graduaciones')" class="glass-card rounded-3xl p-8 cursor-pointer flex flex-col items-center text-center group">
+                <div class="w-20 h-20 rounded-full glass flex items-center justify-center mb-4 group-hover:scale-110 group-hover:-rotate-6 transition-all duration-300">
+                    <i class="fa-solid fa-user-graduate text-3xl text-blue-300 drop-shadow-[0_0_10px_rgba(147,197,253,0.8)]"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">Graduaciones</h3>
+                <p class="text-sm text-gray-300">Celebra tu logro con estilo. Pases QR para control de acceso y galería.</p>
+            </div>
+
+            <!-- Item: XV Años -->
+            <div onclick="openCategory('xvanos')" class="glass-card rounded-3xl p-8 cursor-pointer flex flex-col items-center text-center group">
+                <div class="w-20 h-20 rounded-full glass flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                    <i class="fa-solid fa-crown text-3xl text-rose-300 drop-shadow-[0_0_10px_rgba(253,164,175,0.8)]"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">XV Años</h3>
+                <p class="text-sm text-gray-300">Magia en cada detalle. Colores pastel, sugerencia de vestimenta y pases.</p>
+            </div>
+
+            <!-- Item: Personalizado -->
+            <div onclick="openCategory('otros')" class="glass-card rounded-3xl p-8 cursor-pointer flex flex-col items-center text-center group">
+                <div class="w-20 h-20 rounded-full glass flex items-center justify-center mb-4 group-hover:scale-110 group-hover:-rotate-6 transition-all duration-300">
+                    <i class="fa-solid fa-wand-magic-sparkles text-3xl text-green-300 drop-shadow-[0_0_10px_rgba(134,239,172,0.8)]"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">Lo que se te ocurra</h3>
+                <p class="text-sm text-gray-300">Bautizos, eventos corporativos, baby showers... Lo diseñamos desde cero.</p>
+            </div>
+
+        </div>
+    </main>
+
+    <main id="packages-view" class="view-section flex-col pt-24 pb-12 px-4 md:px-8 max-w-7xl mx-auto">
+        
+        <!-- Banner con Imagen Temática -->
+        <div class="relative w-full h-64 md:h-80 rounded-[2rem] overflow-hidden mb-12 shadow-2xl border border-white/20 flex items-end p-6 md:p-10 slide-up group">
+            <!-- Imagen de fondo que se inyecta por JS -->
+            <div id="banner-bg" class="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-105"></div>
+            <!-- Gradiente oscuro para que el texto sea legible siempre -->
+            <div class="absolute inset-0 bg-gradient-to-t from-[#1f0430] via-[#1f0430]/70 to-transparent"></div>
+            
+            <div class="relative z-10 w-full flex flex-col sm:flex-row sm:items-end gap-6 justify-between">
+                <div class="flex items-center gap-5">
+                    <button onclick="showView('home-view')" class="glass w-14 h-14 rounded-full flex items-center justify-center hover:bg-white/30 transition shadow-lg shrink-0 text-xl">
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </button>
+                    <div>
+                        <h2 id="cat-title" class="text-4xl md:text-6xl font-extrabold text-white drop-shadow-lg tracking-tight">Categoría</h2>
+                        <p id="cat-subtitle" class="text-pink-200 font-medium mt-1 text-lg md:text-xl drop-shadow-md">Selecciona el paquete perfecto</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3 Packages Container -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start" id="packages-container">
+            <!-- Los paquetes se inyectan via JavaScript -->
+        </div>
+
+    </main>
+
+    <script>
+        // Datos de marketing estructurados, ahora con imágenes temáticas de Unsplash
+        const eventData = {
+            bodas: {
+                title: "Bodas",
+                subtitle: "El inicio de su 'Felices para siempre'.",
+                image: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=2000",
+                theme: "linear-gradient(to bottom, #d4af37, #fff)", // Gold theme
+                packages: [
+                    {
+                        name: "Esencial", price: "$499", desc: "Para bodas íntimas. Elegante y directo al punto.",
+                        features: ["Diseño estático elegante", "Bóton RSVP a WhatsApp", "Ubicación en Google Maps", "Sugerencia de vestimenta"],
+                        visual: { bg: "#fdfbf7", title: "Ana & Luis", icon: "fa-rings-wedding", element: "24.Dic.26" }
+                    },
+                    {
+                        name: "Experiencia", price: "$899", desc: "El favorito. Totalmente interactivo y animado.", featured: true,
+                        features: ["Todo lo del Básico", "Cuenta regresiva animada", "Música de fondo (Spotify)", "Mesa de regalos enlazada", "Formulario de RSVP web"],
+                        visual: { bg: "#e6d7c3", title: "A & L", icon: "fa-champagne-glasses", element: "Faltan 45 días" }
+                    },
+                    {
+                        name: "Diamante", price: "$1,499", desc: "La experiencia VIP para bodas de lujo.",
+                        features: ["Todo lo de Experiencia", "Pases de acceso con Código QR", "Galería de fotos de novios", "Dominio web personalizado", "Confirmación automática en Excel"],
+                        visual: { bg: "#2c2c2c", title: "Enlace Matrimonial", icon: "fa-gem", element: "[ CÓDIGO QR ]" }
+                    }
+                ]
+            },
+            despedidas: {
+                title: "Despedidas",
+                subtitle: "Lo que pasa en la fiesta, empieza en la invitación.",
+                image: "https://images.unsplash.com/photo-1566737236500-c8ac43014a67?auto=format&fit=crop&q=80&w=2000",
+                theme: "linear-gradient(to bottom, #9d4edd, #ff4d6d)",
+                packages: [
+                    {
+                        name: "Tranqui", price: "$399", desc: "Solo información y confirmación.",
+                        features: ["Diseño temático", "RSVP a WhatsApp", "Ubicación GPS"],
+                        visual: { bg: "#ffccd5", title: "Bye Soltería", icon: "fa-martini-glass", element: "Viernes 8 PM" }
+                    },
+                    {
+                        name: "Party Hard", price: "$799", desc: "Para prender el ambiente desde antes.", featured: true,
+                        features: ["Animaciones neón", "Playlist colaborativa", "Itinerario de la noche", "Cuenta regresiva"],
+                        visual: { bg: "#240046", title: "Game Over", icon: "fa-beer-mug-empty", element: "¡A beber!" }
+                    },
+                    {
+                        name: "VIP Weekend", price: "$1,299", desc: "Ideal para viajes y fines de semana.",
+                        features: ["Todo lo anterior", "Detalles de vuelos/hotel", "Control de pagos/cooperación", "Galería secreta post-evento"],
+                        visual: { bg: "#ff9e00", title: "Vegas Baby", icon: "fa-plane", element: "Itinerario VIP" }
+                    }
+                ]
+            },
+            cumpleanos: {
+                title: "Cumpleaños",
+                subtitle: "Un año más de vida merece una gran entrada.",
+                image: "https://images.unsplash.com/photo-1530103862676-de8892b12a15?auto=format&fit=crop&q=80&w=2000",
+                theme: "linear-gradient(to bottom, #ff0a54, #ffb5a7)",
+                packages: [
+                    {
+                        name: "Clásico", price: "$399", desc: "Práctico y muy bonito.",
+                        features: ["Diseño acorde a temática", "Fecha y Hora", "Ubicación (Maps)", "RSVP WhatsApp"],
+                        visual: { bg: "#a2d2ff", title: "Mis 25", icon: "fa-cake-candles", element: "¡No faltes!" }
+                    },
+                    {
+                        name: "Estrella", price: "$699", desc: "Con más dinamismo y sorpresas.", featured: true,
+                        features: ["Animaciones de confeti", "Música de fondo", "Sugerencia de regalos", "Cuenta regresiva"],
+                        visual: { bg: "#ffc8dd", title: "Party Time", icon: "fa-gift", element: "00:24:10" }
+                    },
+                    {
+                        name: "Épico", price: "$999", desc: "Tira la casa por la ventana.",
+                        features: ["Todo lo Estrella", "Formulario de asistencia web", "Filtro de Instagram", "Pases digitales únicos"],
+                        visual: { bg: "#ffafcc", title: "Dirty 30", icon: "fa-crown", element: "VIP Access" }
+                    }
+                ]
+            },
+            graduaciones: {
+                title: "Graduaciones",
+                subtitle: "El fin de una etapa, el inicio de tu futuro.",
+                image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&q=80&w=2000",
+                theme: "linear-gradient(to bottom, #03045e, #0077b6)",
+                packages: [
+                    {
+                        name: "Generación", price: "$499", desc: "Información clara para tu familia.",
+                        features: ["Diseño formal/elegante", "Horarios de ceremonia", "Ubicación del salón", "Confirmación sencilla"],
+                        visual: { bg: "#e0f2fe", title: "Generación '26", icon: "fa-graduation-cap", element: "Ceremonia 10AM" }
+                    },
+                    {
+                        name: "Prom Night", price: "$899", desc: "Para que la fiesta empiece online.", featured: true,
+                        features: ["Diseño animado", "Dress code visual", "Cuenta regresiva", "Música del baile", "Muro de buenos deseos"],
+                        visual: { bg: "#023e8a", title: "Prom 2026", icon: "fa-music", element: "Let's Dance" }
+                    },
+                    {
+                        name: "Golden Grad", price: "$1,399", desc: "Control total de tu evento de gala.",
+                        features: ["Pases QR inviolables para acceso", "Asignación de mesas interactiva", "Galería de fotos de la generación", "Descarga de fotos post-evento"],
+                        visual: { bg: "#03045e", title: "Gala de Grado", icon: "fa-qrcode", element: "Pase QR Mesa 4" }
+                    }
+                ]
+            },
+            xvanos: {
+                title: "XV Años",
+                subtitle: "Magia y elegancia para tu momento soñado.",
+                image: "https://images.unsplash.com/photo-1549416878-b9ca95e1bbab?auto=format&fit=crop&q=80&w=2000",
+                theme: "linear-gradient(to bottom, #ffb5a7, #fcd5ce)",
+                packages: [
+                    {
+                        name: "Princesa", price: "$499", desc: "Delicada, bonita y funcional.",
+                        features: ["Paleta de colores a tu vestido", "Ceremonia y Recepción", "Botón GPS a ubicaciones", "RSVP a WhatsApp"],
+                        visual: { bg: "#ffe5ec", title: "Mis XV", icon: "fa-wand-magic-sparkles", element: "Iglesia 5 PM" }
+                    },
+                    {
+                        name: "Cuento de Hadas", price: "$899", desc: "Llena de detalles interactivos.", featured: true,
+                        features: ["Efecto de brillos/mariposas animadas", "Canción de entrada de fondo", "Sugerencia de regalos (Sobres)", "Cuenta regresiva"],
+                        visual: { bg: "#fb6f92", title: "Sweet 15", icon: "fa-crown", element: "Faltan 20 días" }
+                    },
+                    {
+                        name: "Reina de la Noche", price: "$1,399", desc: "Control de invitados y experiencia total.",
+                        features: ["Pases digitales QR para filtro", "Padrinos y corte de honor", "Filtro personalizado de Instagram", "Formulario web de confirmación"],
+                        visual: { bg: "#2a0800", title: "Gala XV", icon: "fa-qrcode", element: "[ PASE VIP ]" }
+                    }
+                ]
+            }
+        };
+
+        const defaultData = {
+            title: "Tu Evento Único",
+            subtitle: "Diseñamos a la medida de lo que imaginas.",
+            image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=2000", // Evento genérico con luces
+            theme: "linear-gradient(to bottom, #00b4d8, #caf0f8)",
+            packages: [
+                {
+                    name: "Básico", price: "$499", desc: "Lo esencial para invitar.",
+                    features: ["Diseño personalizado", "Botón GPS", "Confirmación por WA"],
+                    visual: { bg: "#f8f9fa", title: "Mi Evento", icon: "fa-calendar-check", element: "Fecha" }
+                },
+                {
+                    name: "Estándar", price: "$799", desc: "Interactivo y memorable.", featured: true,
+                    features: ["Diseño animado", "Música de fondo", "Cuenta regresiva", "Mesa de regalos"],
+                    visual: { bg: "#e9ecef", title: "Invitación", icon: "fa-music", element: "Play Music" }
+                },
+                {
+                    name: "Premium", price: "$1,299", desc: "La experiencia completa.",
+                    features: ["Todo lo anterior", "Pases QR", "Host Propio", "Galería de fotos"],
+                    visual: { bg: "#343a40", title: "VIP", icon: "fa-qrcode", element: "Escanear" }
+                }
+            ]
+        };
+
+        // Función para cambiar de vistas simulando una App (SPA)
+        function showView(viewId) {
+            // Ocultar todas con transición suave
+            document.querySelectorAll('.view-section').forEach(el => {
+                el.classList.remove('active', 'fade-in');
+            });
+            // Mostrar solicitada
+            const view = document.getElementById(viewId);
+            view.classList.add('active', 'fade-in');
+            window.scrollTo({ top: 0, behavior: 'smooth' }); // Regresar arriba suavemente
+        }
+
+        // Función para inyectar los datos del evento seleccionado
+        function openCategory(catId) {
+            const data = eventData[catId] || defaultData;
+            
+            // Inyectar Textos e Imagen de Cabecera
+            document.getElementById('cat-title').innerText = data.title;
+            document.getElementById('cat-subtitle').innerText = data.subtitle;
+            document.getElementById('banner-bg').style.backgroundImage = `url('${data.image}')`;
+
+            // Renderizar Paquetes
+            const container = document.getElementById('packages-container');
+            container.innerHTML = ''; // Limpiar anteriores
+
+            data.packages.forEach((pkg, index) => {
+                // Destacar paquete principal
+                const isFeatured = pkg.featured ? 'border-pink-400 border-2 transform md:-translate-y-4 shadow-[0_0_40px_rgba(244,114,182,0.3)]' : 'border-white/10 mt-0';
+                const badge = pkg.featured ? `<div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-pink-500 to-orange-500 text-white text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest shadow-lg">Más Vendido</div>` : '';
+                
+                // Asegurar contraste del texto en el mockup del celular
+                const isDarkBg = ['#2c2c2c', '#240046', '#343a40', '#03045e', '#2a0800'].includes(pkg.visual.bg);
+                const textColor = isDarkBg ? '#ffffff' : '#1a1a1a';
+
+                const cardHTML = `
+                    <div class="glass relative rounded-[2rem] p-6 md:p-8 flex flex-col h-full fade-in ${isFeatured}" style="animation-delay: ${index * 0.15}s;">
+                        ${badge}
+                        <h3 class="text-3xl font-bold mb-2">${pkg.name}</h3>
+                        <p class="text-sm text-gray-300 mb-6 h-10">${pkg.desc}</p>
+                        
+                        <div class="text-5xl font-black mb-8 text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-orange-400">
+                            ${pkg.price} <span class="text-lg font-medium text-gray-400">MXN</span>
+                        </div>
+
+                        <!-- Mini Mockup de Celular (Gancho Visual) -->
+                        <div class="mb-8 p-5 bg-white/5 rounded-[2rem] border border-white/5">
+                            <p class="text-center text-xs mb-4 text-gray-400 font-semibold uppercase tracking-widest"><i class="fa-solid fa-eye text-pink-400 mr-1"></i> Previsualización</p>
+                            <div class="phone-mockup">
+                                <div class="phone-notch"></div>
+                                <div class="phone-screen" style="background: ${data.theme}">
+                                    <div style="background: ${pkg.visual.bg}; color: ${textColor};" class="w-full h-full rounded-2xl flex flex-col items-center justify-center p-3 shadow-[inset_0_2px_10px_rgba(0,0,0,0.1)] transition-transform hover:scale-105 duration-500">
+                                        <i class="fa-solid ${pkg.visual.icon} text-3xl mb-3 opacity-90"></i>
+                                        <h4 class="font-bold text-[11px] uppercase tracking-wide leading-tight mb-2">${pkg.visual.title}</h4>
+                                        <div class="w-12 h-1 bg-current opacity-30 rounded mb-3"></div>
+                                        <div class="bg-current text-white/90 px-3 py-1.5 rounded-md text-[9px] font-bold mix-blend-difference uppercase tracking-wider">${pkg.visual.element}</div>
+                                        <div class="mt-auto w-full flex justify-center gap-1.5">
+                                            <div class="w-2.5 h-2.5 rounded-full bg-current opacity-20"></div>
+                                            <div class="w-2.5 h-2.5 rounded-full bg-current opacity-20"></div>
+                                            <div class="w-2.5 h-2.5 rounded-full bg-current opacity-20"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-xs font-bold uppercase tracking-widest text-pink-300 mb-4">¿Qué incluye?</div>
+                        <ul class="text-sm text-gray-200 mb-10 flex-grow space-y-4">
+                            ${pkg.features.map(f => `<li class="flex items-start leading-tight"><i class="fa-solid fa-circle-check text-green-400 mt-0.5 mr-3 text-base drop-shadow"></i> ${f}</li>`).join('')}
+                        </ul>
+
+                        <button onclick="contratar('${pkg.name}', '${data.title}')" class="w-full py-4 rounded-full font-bold text-lg text-white transition-all duration-300 
+                            ${pkg.featured ? 'bg-gradient-to-r from-pink-500 to-orange-500 hover:shadow-[0_10px_20px_rgba(244,114,182,0.4)] hover:-translate-y-1' : 'glass hover:bg-white/20 hover:-translate-y-1'}">
+                            Elegir ${pkg.name}
+                        </button>
+                    </div>
+                `;
+                container.innerHTML += cardHTML;
+            });
+
+            showView('packages-view');
+        }
+
+        function contratar(paquete, evento) {
+            // Link a mensajes directos de Instagram. 
+            // Nota: ig.me abre el chat directo, pero a diferencia de WhatsApp, no soporta mensajes pre-escritos por URL.
+            const username = "usuario_de_prueba"; // Reemplaza esto con tu usuario cuando tengas el link
+            const url = `https://ig.me/m/${username}`;
+            
+            // Te dejo aquí el código de WhatsApp comentado para cuando lo necesites de nuevo:
+            // const mensaje = `¡Hola! Me interesa el paquete *${paquete}* para mi evento de *${evento}*.`;
+            // const url = `https://wa.me/1234567890?text=${encodeURIComponent(mensaje)}`;
+            
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+</html>
