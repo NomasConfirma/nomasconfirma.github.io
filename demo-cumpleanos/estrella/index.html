@@ -1,14 +1,13 @@
 <!DOCTYPE html>
-<html lang="es" style="background-color: #000;">
+<html lang="es" style="background-color: #121212;">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>¡Los 30 de Valeria! | Cumpleaños Épico</title>
+    <title>Los 30 de Valeria | Invitación</title>
     
-    <!-- Carga de fuentes estricta (Bebas Neue para impacto, Montserrat para lectura) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;600;800&family=Permanent+Marker&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -18,17 +17,15 @@
                 extend: {
                     colors: {
                         brand: {
-                            neonPurple: '#B026FF', 
-                            neonBlue: '#00F3FF',
-                            gold: '#FFD700', 
-                            goldLight: '#FFF4B3', 
-                            dark: '#0A0A0A', 
-                            darker: '#050505',
+                            rose: '#C07C88',       // Rose Gold
+                            champagne: '#F7E7CE',  // Champagne
+                            dark: '#121212',       // Fondo oscuro
+                            card: '#1E1E1E',       // Fondo tarjetas
                         }
                     },
                     fontFamily: {
-                        'bebas': ['"Bebas Neue"', 'sans-serif'],
-                        'marker': ['"Permanent Marker"', 'cursive'],
+                        'playfair': ['"Playfair Display"', 'serif'],
+                        'montserrat': ['"Montserrat"', 'sans-serif'],
                     }
                 }
             }
@@ -37,465 +34,177 @@
 
     <style>
         html, body {
-            background-color: #050505 !important;
+            background-color: #121212;
             margin: 0;
             padding: 0;
-            width: 100vw;
-            height: 100dvh;
-            overflow: hidden;
-            touch-action: none;
+            width: 100%;
             font-family: 'Montserrat', sans-serif;
             color: #ffffff;
+            scroll-behavior: smooth;
         }
 
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-        .app-container {
+        .main-container {
             max-width: 480px;
             margin: 0 auto;
             position: relative;
-            height: 100dvh;
-            width: 100%;
-            overflow: hidden;
-            z-index: 10;
-        }
-
-        /* Slideshow de fondo (Modo Fiesta) */
-        .bg-slideshow {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            z-index: 0;
-            background-color: #000;
-        }
-        .bg-slide {
-            position: absolute;
-            inset: -5%;
-            background-size: cover;
-            background-position: center;
-            opacity: 0;
-            transition: opacity 1.5s ease-in-out;
-            animation: zoomBg 20s infinite alternate linear;
-            filter: brightness(0.3) contrast(1.2);
-        }
-        @keyframes zoomBg {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.15); }
-        }
-        .bg-slide.active { opacity: 1; z-index: 1; }
-
-        /* Pantallas (Screens) */
-        .app-screen {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            z-index: 10;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transform: scale(0.95) translateY(20px);
-            overflow-y: auto;
+            background: linear-gradient(to bottom, #1a1a1a 0%, #121212 100%);
+            min-height: 100dvh;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
             overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-            padding: 2rem 1.5rem 100px 1.5rem;
-        }
-        .app-screen.active {
-            opacity: 1;
-            transform: scale(1) translateY(0);
-            pointer-events: auto;
-            z-index: 20;
         }
 
-        /* Glassmorphism Party Edition */
-        .glass-panel {
-            background: rgba(20, 20, 20, 0.7);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            box-shadow: 0 10px 40px rgba(176, 38, 255, 0.15);
-            border-radius: 1.5rem;
-        }
-        .neon-border {
-            border: 1px solid rgba(176, 38, 255, 0.5);
-            box-shadow: 0 0 15px rgba(176, 38, 255, 0.3), inset 0 0 10px rgba(176, 38, 255, 0.1);
-        }
-
-        .text-shadow { text-shadow: 2px 4px 10px rgba(0,0,0,0.9); }
-        .text-glow-gold { text-shadow: 0 0 15px rgba(255, 215, 0, 0.8); }
-        .text-glow-neon { text-shadow: 0 0 15px rgba(176, 38, 255, 0.8); }
-
-        /* Confeti / Destellos de Fiesta */
-        .particle {
-            position: fixed;
-            pointer-events: none;
-            z-index: 100;
-            animation: confettiFall linear infinite;
-        }
-        @keyframes confettiFall {
-            0% { transform: translateY(-10vh) translateX(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(110dvh) translateX(50px) rotate(720deg); opacity: 0; }
-        }
-
-        /* Timeline de Éxitos */
-        .timeline-item {
-            position: relative;
-            padding-left: 2rem;
-            margin-bottom: 2rem;
-        }
-        .timeline-item::before {
-            content: '';
-            position: absolute; left: 0; top: 0; bottom: -2rem;
-            width: 2px; background: linear-gradient(to bottom, #FFD700, #B026FF);
-        }
-        .timeline-item:last-child::before { display: none; }
-        .timeline-dot {
-            position: absolute; left: -0.35rem; top: 0;
-            width: 0.8rem; height: 0.8rem;
-            background: #FFD700; border-radius: 50%;
-            box-shadow: 0 0 15px rgba(255, 215, 0, 1);
-        }
-
-        /* Galería */
-        .gallery-img { transition: transform 0.3s ease, filter 0.3s ease; }
-        .gallery-img:active {
-            transform: scale(1.05); z-index: 30; position: relative;
-            filter: brightness(1.2);
-        }
-
-        /* Menú Flotante Glass */
-        .glass-nav {
-            background: rgba(10, 10, 10, 0.85);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.9), 0 0 15px rgba(176, 38, 255, 0.2);
-        }
-
-        /* Splash Screen & Overlay */
-        #splash-screen {
-            position: fixed; inset: 0; background: #050505; z-index: 9999;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transition: opacity 0.8s ease-in-out;
-        }
-        .splash-hidden { opacity: 0; pointer-events: none; }
-        .splash-icon {
-            font-size: 5rem; color: #FFD700; opacity: 0;
-            filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.8));
-            animation: splashIconIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, pulse-neon 1.5s 1s infinite alternate;
-        }
-        @keyframes splashIconIn {
-            0% { opacity: 0; transform: scale(0.5) translateY(50px) rotate(-15deg); }
-            100% { opacity: 1; transform: scale(1) translateY(0) rotate(0deg); }
-        }
-        @keyframes pulse-neon {
-            0% { filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.6)); transform: scale(1); }
-            100% { filter: drop-shadow(0 0 35px rgba(176, 38, 255, 0.9)); transform: scale(1.1); }
-        }
-
+        /* Overlay para audio */
         #welcome-overlay {
-            position: fixed; inset: 0; z-index: 200;
+            position: fixed; inset: 0; z-index: 50;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background: rgba(18, 18, 18, 0.95);
+            backdrop-filter: blur(10px);
             transition: opacity 0.8s ease, visibility 0.8s ease;
-            background: rgba(5,5,5,0.8); backdrop-filter: blur(10px);
         }
-        .hidden-overlay { opacity: 0; visibility: hidden; }
+        .hidden-overlay { opacity: 0; visibility: hidden; pointer-events: none; }
+
+        /* Componentes de la interfaz */
+        .elegant-card {
+            background: rgba(30, 30, 30, 0.6);
+            border: 1px solid rgba(192, 124, 136, 0.3);
+            border-radius: 1rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .text-glow {
+            text-shadow: 0 0 15px rgba(192, 124, 136, 0.5);
+        }
+        
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(192, 124, 136, 0.5), transparent);
+            margin: 2rem 0;
+        }
+
+        /* Botón animado de música */
+        .music-btn-pulse {
+            animation: pulse-border 2s infinite;
+        }
+        @keyframes pulse-border {
+            0% { box-shadow: 0 0 0 0 rgba(192, 124, 136, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(192, 124, 136, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(192, 124, 136, 0); }
+        }
     </style>
 </head>
 <body class="antialiased">
 
-    <div id="splash-screen">
-        <i class="fa-solid fa-cake-candles splash-icon"></i>
-        <h2 class="font-bebas text-4xl md:text-5xl text-white text-center mt-8 px-6 tracking-widest opacity-0 transition-opacity duration-1000" id="splash-text">
-            Nivel 30<br><span class="text-brand-neonPurple">Desbloqueado</span>
-        </h2>
-    </div>
-
-    <!-- Música Electrónica/Fiesta -->
     <audio id="bg-music" loop preload="auto">
-        <source src="https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=party-time-112930.mp3" type="audio/mpeg">
+        <!-- Canción pop/lounge elegante para fondo -->
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" type="audio/mpeg">
     </audio>
 
-    <div class="bg-slideshow" id="bg-slideshow">
-        <div class="bg-slide active" style="background-image: url('https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80')"></div>
-        <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1566737236500-c8ac43014a67?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80')"></div>
-        <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80')"></div>
-        <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80')"></div>
-    </div>
-    
-    <div class="fixed inset-0 bg-gradient-to-b from-brand-darker/60 via-brand-darker/40 to-brand-darker/90 z-[2] pointer-events-none"></div>
-
-    <button id="btn-music" class="fixed top-6 right-6 z-[102] w-12 h-12 glass-panel border-brand-neonPurple/50 rounded-full flex items-center justify-center text-white shadow-[0_0_15px_rgba(176,38,255,0.4)] transition-transform hover:scale-110">
-        <i class="fa-solid fa-music text-brand-gold" id="music-icon"></i>
-    </button>
-
     <div id="welcome-overlay">
-        <div class="text-center p-8 glass-panel neon-border shadow-2xl mx-6 max-w-sm w-full transform transition-transform hover:scale-[1.02] duration-500">
-            <i class="fa-solid fa-champagne-glasses text-6xl text-brand-gold mb-6 animate-bounce"></i>
-            <h1 class="font-bebas text-6xl mb-2 text-white tracking-wide">Valeria <span class="text-brand-neonPurple">Cruz</span></h1>
-            <p class="text-[12px] tracking-[0.4em] uppercase mb-8 font-bold text-brand-goldLight/80">Fiesta de Cumpleaños</p>
-            <button id="btn-open" class="bg-gradient-to-r from-brand-neonPurple to-brand-gold text-brand-darker px-8 py-4 rounded-full text-sm uppercase tracking-widest font-extrabold shadow-[0_0_20px_rgba(255,215,0,0.5)] transition-all duration-300 w-full hover:brightness-110">
-                Entrar a la Fiesta
+        <div class="text-center p-8 elegant-card mx-6 max-w-sm w-full">
+            <i class="fa-solid fa-envelope-open-text text-5xl text-brand-rose mb-6"></i>
+            <h1 class="font-playfair italic text-3xl mb-2 text-brand-champagne">Estás Invitado</h1>
+            <p class="text-xs uppercase tracking-widest mb-8 text-white/70">Acompáñame a celebrar</p>
+            <button id="btn-open" class="bg-brand-rose text-white px-8 py-4 rounded-full text-sm uppercase tracking-widest font-semibold shadow-lg transition-transform hover:scale-105 w-full">
+                Abrir Invitación
             </button>
         </div>
     </div>
 
-    <main class="app-container" id="app-root">
+    <div class="main-container pb-20">
         
-        <!-- PANTALLA 1: INICIO -->
-        <section id="screen-home" class="app-screen active no-scrollbar">
-            <div class="text-center w-full shrink-0 mb-4 mt-8">
-                <p class="text-brand-neonBlue tracking-[0.4em] uppercase text-[12px] mb-2 font-extrabold text-shadow">Save The Date</p>
-                <h1 class="font-bebas text-8xl text-white leading-none text-shadow mb-0 tracking-wider">Mis <span class="text-brand-gold">30</span></h1>
-                <p class="font-marker text-2xl text-brand-neonPurple mt-2 transform -rotate-3 text-shadow">¡Se va a descontrolar!</p>
-            </div>
+        <!-- Botón Música Flotante -->
+        <button id="btn-music" class="fixed top-4 right-4 z-[40] w-10 h-10 elegant-card rounded-full flex items-center justify-center text-brand-rose music-btn-pulse transition-transform hover:scale-110">
+            <i class="fa-solid fa-music text-sm" id="music-icon"></i>
+        </button>
 
-            <!-- Foto Central (Estilo Neón/Glam) -->
-            <div class="relative w-56 h-56 mx-auto shrink-0 mb-10 mt-4">
-                <div class="absolute inset-0 rounded-full border-4 border-brand-neonPurple animate-ping opacity-40"></div>
-                <div class="absolute inset-0 rounded-full border-4 border-brand-gold animate-pulse opacity-60 scale-105"></div>
-                <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="La Cumpleañera" class="w-full h-full object-cover rounded-full border-[4px] border-brand-gold shadow-[0_0_50px_rgba(176,38,255,0.6)] relative z-10 grayscale hover:grayscale-0 transition-all duration-500">
-            </div>
+        <header class="pt-16 pb-8 px-6 text-center">
+            <p class="text-xs uppercase tracking-[0.3em] text-brand-rose mb-3">Save The Date</p>
+            <h1 class="font-playfair text-6xl text-brand-champagne mb-4">Mis 30</h1>
             
-            <!-- Reloj Regresivo Animado -->
-            <div class="glass-panel neon-border p-5 w-full text-white shrink-0 mt-auto mb-4">
-                <h2 class="font-bebas text-2xl mb-3 text-brand-gold text-center tracking-widest text-shadow">La cuenta atrás</h2>
-                <div id="countdown" class="flex justify-center gap-3">
-                    <div class="flex flex-col items-center w-16 bg-black/50 rounded-lg p-2 border border-white/10">
-                        <span id="days" class="text-3xl font-bebas text-brand-neonBlue text-shadow">00</span>
-                        <span class="text-[9px] uppercase tracking-widest text-white/70 mt-1 font-bold">Días</span>
+            <div class="w-48 h-48 mx-auto mb-6 relative">
+                <div class="absolute inset-0 rounded-full border-2 border-brand-rose/50 -m-2"></div>
+                <!-- Imagen de la festejada (elegante/blanco y negro) -->
+                <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Valeria" class="w-full h-full object-cover rounded-full border-4 border-brand-card shadow-xl grayscale">
+            </div>
+
+            <h2 class="font-playfair italic text-3xl text-white mb-2 text-glow">Valeria Cruz</h2>
+            <p class="font-montserrat font-light text-sm text-white/80 mb-8">Sábado, 15 de Noviembre • 21:00 hrs</p>
+
+            <!-- Cuenta Regresiva -->
+            <div class="elegant-card p-5 mb-4">
+                <p class="text-[10px] uppercase tracking-widest text-brand-rose mb-3 font-semibold">Faltan</p>
+                <div id="countdown" class="flex justify-center gap-4 text-brand-champagne font-playfair">
+                    <div class="flex flex-col items-center">
+                        <span id="days" class="text-3xl">00</span>
+                        <span class="text-[9px] uppercase tracking-wider font-montserrat text-white/60">Días</span>
                     </div>
-                    <span class="text-2xl text-brand-gold/50 font-light mt-2 animate-pulse">:</span>
-                    <div class="flex flex-col items-center w-16 bg-black/50 rounded-lg p-2 border border-white/10">
-                        <span id="hours" class="text-3xl font-bebas text-brand-neonBlue text-shadow">00</span>
-                        <span class="text-[9px] uppercase tracking-widest text-white/70 mt-1 font-bold">Hrs</span>
+                    <span class="text-2xl font-light text-brand-rose/50">:</span>
+                    <div class="flex flex-col items-center">
+                        <span id="hours" class="text-3xl">00</span>
+                        <span class="text-[9px] uppercase tracking-wider font-montserrat text-white/60">Hrs</span>
                     </div>
-                    <span class="text-2xl text-brand-gold/50 font-light mt-2 animate-pulse">:</span>
-                    <div class="flex flex-col items-center w-16 bg-black/50 rounded-lg p-2 border border-white/10">
-                        <span id="minutes" class="text-3xl font-bebas text-brand-neonBlue text-shadow">00</span>
-                        <span class="text-[9px] uppercase tracking-widest text-white/70 mt-1 font-bold">Min</span>
+                    <span class="text-2xl font-light text-brand-rose/50">:</span>
+                    <div class="flex flex-col items-center">
+                        <span id="minutes" class="text-3xl">00</span>
+                        <span class="text-[9px] uppercase tracking-wider font-montserrat text-white/60">Min</span>
                     </div>
                 </div>
             </div>
-        </section>
+        </header>
 
-        <!-- PANTALLA 2: HISTORIA / TIMELINE -->
-        <section id="screen-history" class="app-screen no-scrollbar">
-            <div class="text-center w-full shrink-0 mb-8 mt-4">
-                <h2 class="font-bebas text-6xl text-brand-gold text-shadow mb-1 tracking-wide">El Calentamiento</h2>
-                <p class="text-brand-neonBlue tracking-[0.3em] uppercase text-[10px] font-bold">Timeline de Éxitos</p>
-            </div>
+        <div class="divider"></div>
 
-            <div class="glass-panel p-6 w-full text-left rounded-3xl relative">
-                
-                <div class="timeline-item">
-                    <div class="timeline-dot bg-brand-neonPurple shadow-[0_0_10px_#B026FF]"></div>
-                    <h3 class="font-bebas text-brand-goldLight text-2xl tracking-wide mb-1">El Nacimiento de una Leyenda</h3>
-                    <p class="text-[10px] text-brand-neonBlue font-bold tracking-widest uppercase mb-2">1996</p>
-                    <p class="text-sm text-white/80 leading-relaxed font-light">El mundo se volvió un lugar mucho más divertido. Las cunas no estaban listas para este nivel de energía.</p>
-                </div>
+        <section class="px-6 py-4">
+            <h3 class="font-playfair text-2xl text-center text-brand-champagne mb-6 italic">Detalles del Evento</h3>
 
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <h3 class="font-bebas text-brand-goldLight text-2xl tracking-wide mb-1">Sobreviví a mis 20s</h3>
-                    <p class="text-[10px] text-brand-neonBlue font-bold tracking-widest uppercase mb-2">La Era del Caos</p>
-                    <p class="text-sm text-white/80 leading-relaxed font-light">Mucha pizza, malas decisiones divertidas, universidad y las mejores anécdotas que no se pueden contar aquí.</p>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-dot bg-brand-neonBlue shadow-[0_0_10px_#00F3FF]"></div>
-                    <h3 class="font-bebas text-brand-goldLight text-2xl tracking-wide mb-1">Bienvenidos al 3er Piso</h3>
-                    <p class="text-[10px] text-brand-neonBlue font-bold tracking-widest uppercase mb-2">Presente</p>
-                    <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Party Time" class="w-full h-32 object-cover rounded-xl mt-2 mb-3 border border-brand-neonPurple/50 shadow-lg">
-                    <p class="text-sm text-white/80 leading-relaxed font-light font-bold">Oficialmente adulta, pero la actitud de fiesta sigue intacta. ¡Es hora de celebrarlo en grande!</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- PANTALLA 3: GALERÍA -->
-        <section id="screen-gallery" class="app-screen no-scrollbar">
-            <div class="text-center w-full shrink-0 mb-6 mt-4">
-                <h2 class="font-bebas text-6xl text-brand-gold text-shadow mb-1 tracking-wide">Hall of Fame</h2>
-                <p class="text-brand-neonPurple tracking-[0.3em] uppercase text-[10px] font-bold">Momentos antes de la tragedia</p>
-            </div>
-
-            <div class="w-full grid grid-cols-2 gap-3 pb-8">
-                <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" class="gallery-img w-full h-40 object-cover rounded-2xl border border-brand-gold/30 shadow-[0_5px_15px_rgba(0,0,0,0.5)]" alt="Fiesta 1">
-                <img src="https://images.unsplash.com/photo-1566737236500-c8ac43014a67?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" class="gallery-img w-full h-40 object-cover rounded-2xl border border-brand-neonPurple/30 shadow-[0_5px_15px_rgba(0,0,0,0.5)]" alt="Fiesta 2">
-                <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="gallery-img w-full h-48 object-cover rounded-2xl border-2 border-brand-neonBlue/40 shadow-[0_5px_20px_rgba(0,243,255,0.2)] col-span-2" alt="Fiesta 3">
-                <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" class="gallery-img w-full h-40 object-cover rounded-2xl border border-brand-gold/30 shadow-[0_5px_15px_rgba(0,0,0,0.5)]" alt="Fiesta 4">
-                <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" class="gallery-img w-full h-40 object-cover rounded-2xl border border-brand-neonPurple/30 shadow-[0_5px_15px_rgba(0,0,0,0.5)]" alt="Fiesta 5">
-            </div>
-        </section>
-
-        <!-- PANTALLA 4: DETALLES -->
-        <section id="screen-details" class="app-screen no-scrollbar">
-            <div class="text-center w-full shrink-0 mb-6 mt-4">
-                <h2 class="font-bebas text-6xl text-brand-gold text-shadow mb-1 tracking-wide">El Spot</h2>
-                <p class="text-brand-neonBlue tracking-[0.3em] uppercase text-[10px] font-bold">Dónde y Cuándo</p>
-            </div>
-
-            <!-- Ubicación de la Fiesta -->
-            <div class="w-full shrink-0 mb-5">
-                <div class="glass-panel neon-border p-6 text-center relative overflow-hidden rounded-3xl">
-                    <div class="absolute left-0 top-0 bottom-0 w-2 bg-gradient-to-b from-brand-neonPurple to-brand-neonBlue"></div>
-                    <i class="fa-solid fa-compact-disc text-4xl text-brand-gold mb-3 animate-spin-slow"></i>
-                    <h3 class="font-bebas text-3xl text-white mb-1 tracking-wider">Neon Club & Lounge</h3>
-                    <p class="font-bold text-brand-goldLight text-sm mb-1">Av. Fiesta Principal 404</p>
-                    <p class="text-[10px] text-white/60 mb-5 font-bold uppercase tracking-wider">Zona VIP, Ciudad de Celebración</p>
-                    <a href="https://maps.app.goo.gl/" target="_blank" class="block bg-brand-darker border border-brand-neonPurple text-white px-8 py-4 rounded-full text-[11px] font-extrabold uppercase tracking-widest shadow-[0_0_15px_rgba(176,38,255,0.4)] w-full hover:bg-brand-neonPurple hover:text-white transition-all">
-                        Abrir Google Maps <i class="fa-solid fa-location-arrow ml-2"></i>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Dress code y Regalos (Adaptado) -->
-            <div class="grid grid-cols-2 gap-4 w-full shrink-0 mb-6">
-                <div class="glass-panel p-5 flex flex-col items-center text-center rounded-3xl border border-brand-gold/20">
-                    <div class="w-12 h-12 mb-3 bg-black/50 border border-brand-neonBlue rounded-full flex items-center justify-center text-brand-neonBlue shadow-[0_0_10px_rgba(0,243,255,0.3)]">
-                        <i class="fa-solid fa-shirt text-xl"></i>
-                    </div>
-                    <h3 class="font-bebas text-xl text-brand-goldLight tracking-wider mb-1">Dress Code</h3>
-                    <p class="text-[11px] text-white leading-tight font-bold uppercase tracking-wider">Glam / Party AF<br><span class="text-[9px] text-brand-neonPurple mt-1 block">Brillo o All Black</span></p>
-                </div>
-                
-                <a href="https://www.amazon.com.mx/hz/wishlist/ls/" target="_blank" class="glass-panel p-5 flex flex-col items-center text-center rounded-3xl border border-brand-gold/20 hover:scale-105 transition-transform cursor-pointer">
-                    <div class="w-12 h-12 mb-3 bg-brand-gold rounded-full flex items-center justify-center text-brand-darker shadow-[0_0_10px_rgba(255,215,0,0.5)]">
-                        <i class="fa-solid fa-gift text-xl"></i>
-                    </div>
-                    <h3 class="font-bebas text-xl text-brand-goldLight tracking-wider mb-1">Regalos</h3>
-                    <p class="text-[11px] text-white leading-tight font-bold uppercase tracking-wider">Wishlist<br><span class="text-[9px] text-brand-neonPurple mt-1 block">Amazon o Sobres</span></p>
-                </a>
-            </div>
-        </section>
-
-        <!-- PANTALLA 5: RSVP / FIRMAS -->
-        <section id="screen-rsvp" class="app-screen no-scrollbar">
-            <div class="text-center w-full shrink-0 mb-4 mt-4">
-                <h2 class="font-bebas text-6xl text-brand-gold text-shadow mb-1 tracking-wide">Acceso VIP</h2>
-            </div>
-
-            <!-- Confirmación WhatsApp -->
-            <div class="glass-panel p-6 w-full text-center rounded-3xl mb-5 shrink-0 border border-green-500/30">
-                <h3 class="font-bebas text-2xl text-white tracking-wider mb-2">Confirma tu asistencia</h3>
-                <p class="text-[10px] text-white/70 uppercase tracking-widest font-bold mb-4">No me dejes en visto</p>
-                <a href="https://wa.me/521234567890?text=¡Amiga!%20Ahí%20estaré%20en%20tus%20fabulosos%2030.%20Listísima%20para%20la%20fiesta." target="_blank" class="inline-flex items-center justify-center bg-gradient-to-r from-[#25D366] to-[#1EBE57] text-white px-6 py-4 rounded-xl text-xs font-extrabold uppercase tracking-widest shadow-[0_0_15px_rgba(37,211,102,0.4)] w-full hover:scale-105 transition-transform">
-                    <i class="fa-brands fa-whatsapp text-xl mr-2"></i> Confirmar por WA
+            <!-- Ubicación -->
+            <div class="elegant-card p-6 text-center mb-6">
+                <i class="fa-solid fa-location-dot text-2xl text-brand-rose mb-3"></i>
+                <h4 class="font-playfair text-xl text-white mb-1">Terraza "El Pedregal"</h4>
+                <p class="text-xs text-white/70 mb-4 font-light leading-relaxed">Av. Paseo de la Reforma 202,<br>Ciudad de México.</p>
+                <a href="https://maps.app.goo.gl/" target="_blank" class="inline-block bg-transparent border border-brand-rose text-brand-rose px-6 py-2 rounded-full text-[10px] font-semibold uppercase tracking-widest hover:bg-brand-rose hover:text-white transition-colors">
+                    Ver en Mapa
                 </a>
             </div>
 
-            <!-- Libro de Firmas Real (Firebase) -->
-            <div class="glass-panel p-6 w-full text-left rounded-3xl flex-grow flex flex-col mb-4 border border-brand-neonPurple/30">
-                <h3 class="font-bebas text-2xl text-brand-neonBlue tracking-wider mb-2 flex items-center">
-                    <i class="fa-solid fa-martini-glass-citrus mr-2 text-brand-gold"></i> Muro de la Fama
-                </h3>
-                <p class="text-[10px] text-white/70 font-bold uppercase tracking-wider mb-4">Déjame un shot de buenos deseos.</p>
+            <!-- Dress Code y Regalos en Grid -->
+            <div class="grid grid-cols-2 gap-4">
+                <!-- Dress Code -->
+                <div class="elegant-card p-5 text-center flex flex-col justify-center">
+                    <i class="fa-solid fa-shirt text-xl text-brand-rose mb-2"></i>
+                    <h4 class="font-playfair text-lg text-brand-champagne mb-1">Dress Code</h4>
+                    <p class="text-[10px] text-white/80 font-medium">Formal / Cóctel</p>
+                    <p class="text-[9px] text-white/50 mt-1">Colores oscuros</p>
+                </div>
                 
-                <form id="guestbook-form" class="space-y-3 mb-6 shrink-0">
-                    <input type="text" id="gb-name" required placeholder="Tu Apodo / Nombre" class="w-full bg-black/60 border border-brand-neonPurple/50 rounded-xl text-white py-3 px-4 text-sm font-bold placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-brand-neonBlue">
-                    <textarea id="gb-message" required placeholder="¡Pásala increíble! Escribe aquí..." rows="2" class="w-full bg-black/60 border border-brand-neonPurple/50 rounded-xl text-white py-3 px-4 text-sm font-bold placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-brand-neonBlue resize-none"></textarea>
-                    <button type="submit" id="gb-submit" class="w-full bg-brand-gold text-brand-darker shadow-[0_0_15px_rgba(255,215,0,0.4)] text-[12px] font-extrabold uppercase tracking-widest py-3 rounded-xl flex items-center justify-center hover:bg-white transition-colors">
-                        <i class="fa-solid fa-paper-plane mr-2"></i> Publicar en el Muro
-                    </button>
-                </form>
-
-                <!-- Contenedor de Mensajes -->
-                <div id="messages-container" class="space-y-3 overflow-y-auto flex-grow pr-1 custom-scroll relative h-48">
-                    <div class="text-center text-brand-neonPurple text-xs py-4 font-bold animate-pulse" id="gb-loading">Cargando mensajes...</div>
+                <!-- Mesa de Regalos -->
+                <div class="elegant-card p-5 text-center flex flex-col justify-center">
+                    <i class="fa-solid fa-gift text-xl text-brand-rose mb-2"></i>
+                    <h4 class="font-playfair text-lg text-brand-champagne mb-1">Regalos</h4>
+                    <p class="text-[10px] text-white/80 font-medium">Lluvia de Sobres</p>
+                    <p class="text-[9px] text-white/50 mt-1">O regalo sorpresa</p>
                 </div>
             </div>
         </section>
 
-        <div class="fixed bottom-6 left-0 right-0 flex justify-center z-[150] px-4 pointer-events-none">
-            <nav class="glass-nav rounded-full h-[75px] w-full max-w-[400px] flex justify-between items-center px-6 pointer-events-auto">
-                
-                <button class="nav-btn active flex flex-col items-center justify-center w-14 h-full text-brand-gold transition-all duration-300 transform scale-110" data-target="screen-home">
-                    <i class="fa-solid fa-fire text-xl filter drop-shadow-[0_0_5px_rgba(255,215,0,0.8)] pointer-events-none"></i>
-                    <span class="text-[8px] uppercase tracking-widest font-bold mt-1 pointer-events-none">Inicio</span>
-                </button>
+        <div class="divider"></div>
 
-                <button class="nav-btn flex flex-col items-center justify-center w-14 h-full text-white/40 hover:text-brand-neonBlue transition-all duration-300" data-target="screen-history">
-                    <i class="fa-solid fa-bolt text-xl pointer-events-none"></i>
-                    <span class="text-[8px] uppercase tracking-widest font-bold mt-1 pointer-events-none">Éxitos</span>
-                </button>
-                
-                <button class="nav-btn flex flex-col items-center justify-center w-14 h-full text-white/40 hover:text-brand-neonPurple transition-all duration-300" data-target="screen-gallery">
-                    <i class="fa-solid fa-camera-retro text-xl pointer-events-none"></i>
-                    <span class="text-[8px] uppercase tracking-widest font-bold mt-1 pointer-events-none">Fotos</span>
-                </button>
-
-                <button class="nav-btn flex flex-col items-center justify-center w-14 h-full text-white/40 hover:text-brand-goldLight transition-all duration-300" data-target="screen-details">
-                    <i class="fa-solid fa-map-location-dot text-xl pointer-events-none"></i>
-                    <span class="text-[8px] uppercase tracking-widest font-bold mt-1 pointer-events-none">Spot</span>
-                </button>
-                
-                <button class="nav-btn flex flex-col items-center justify-center w-14 h-full text-white/40 hover:text-[#25D366] transition-all duration-300" data-target="screen-rsvp">
-                    <i class="fa-solid fa-ticket text-xl pointer-events-none"></i>
-                    <span class="text-[8px] uppercase tracking-widest font-bold mt-1 pointer-events-none">RSVP</span>
-                </button>
-            </nav>
-        </div>
-    </main>
+        <section class="px-6 py-4 text-center">
+            <h3 class="font-playfair text-2xl text-brand-champagne mb-2 italic">Confirmación</h3>
+            <p class="text-xs text-white/70 mb-6 font-light">Por favor, confirma tu asistencia antes del 10 de Noviembre.</p>
+            
+            <a href="https://wa.me/521234567890?text=¡Hola!%20Confirmo%20mi%20asistencia%20al%20cumpleaños.%20¡Ahí%20nos%20vemos!" target="_blank" class="block bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white px-8 py-4 rounded-xl text-sm font-semibold uppercase tracking-widest shadow-lg hover:opacity-90 transition-opacity">
+                <i class="fa-brands fa-whatsapp text-lg mr-2 align-middle"></i> Confirmar Asistencia
+            </a>
+            
+            <p class="font-playfair italic text-brand-rose mt-12 text-lg pb-6">¡No faltes!</p>
+        </section>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             
-            // 1. Splash Screen
-            setTimeout(() => {
-                const splashText = document.getElementById('splash-text');
-                if(splashText) splashText.classList.remove('opacity-0');
-            }, 500);
-
-            setTimeout(() => {
-                const splash = document.getElementById('splash-screen');
-                if (splash) {
-                    splash.classList.add('splash-hidden');
-                    setTimeout(() => splash.remove(), 800);
-                }
-            }, 3000);
-
-            // 2. Fondo Slideshow
-            const slides = document.querySelectorAll('.bg-slide');
-            let currentSlide = 0;
-            setInterval(() => {
-                slides[currentSlide].classList.remove('active');
-                currentSlide = (currentSlide + 1) % slides.length;
-                slides[currentSlide].classList.add('active');
-            }, 4500);
-
-            // 3. Menú de Navegación Tabs Modernos
-            const navButtons = document.querySelectorAll('.nav-btn');
-            const screens = document.querySelectorAll('.app-screen');
-
-            // Colores activos según el tab para darle vida
-            const activeColors = ['text-brand-gold', 'text-brand-neonBlue', 'text-brand-neonPurple', 'text-brand-goldLight', 'text-[#25D366]'];
-            const shadowColors = ['rgba(255,215,0,0.8)', 'rgba(0,243,255,0.8)', 'rgba(176,38,255,0.8)', 'rgba(255,244,179,0.8)', 'rgba(37,211,102,0.8)'];
-
-            navButtons.forEach((btn, index) => {
-                btn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    
-                    // Reset all buttons
-                    navButtons.forEach(b => {
-                        b.className = 'nav-btn flex flex-col items-center justify-center w-14 h-full text-white/40 transition-all duration-300';
-                        b.querySelector('i').style.filter = 'none';
-                    });
-                    
-                    // Activate clicked button
-                    btn.classList.remove('text-white/40');
-                    btn.classList.add(activeColors[index], 'scale-110', 'active');
-                    btn.querySelector('i').style.filter = `drop-shadow(0 0 8px ${shadowColors[index]})`;
-
-                    // Switch screens
-                    screens.forEach(screen => screen.classList.remove('active'));
-                    const targetId = btn.getAttribute('data-target');
-                    const targetScreen = document.getElementById(targetId);
-                    targetScreen.classList.add('active');
-                    targetScreen.scrollTop = 0;
-                });
-            });
-
-            // 4. Música y Overlay
+            // 1. Manejo del Overlay y Audio
             const btnOpen = document.getElementById('btn-open');
             const welcomeOverlay = document.getElementById('welcome-overlay');
             const bgMusic = document.getElementById('bg-music');
@@ -504,32 +213,34 @@
             let isPlaying = false;
 
             btnOpen.addEventListener('click', () => {
-                bgMusic.volume = 0.6;
+                bgMusic.volume = 0.5; // Volumen moderado
                 bgMusic.play().then(() => {
                     isPlaying = true;
-                    musicIcon.classList.add('fa-compact-disc', 'animate-spin');
+                    musicIcon.classList.add('fa-pause');
                     musicIcon.classList.remove('fa-music');
-                }).catch(err => console.log("Autoplay bloqueado"));
+                }).catch(err => console.log("Autoplay requiere más interacción en este navegador."));
                 welcomeOverlay.classList.add('hidden-overlay');
             });
 
             btnMusic.addEventListener('click', () => {
                 if (isPlaying) {
                     bgMusic.pause();
-                    musicIcon.classList.remove('fa-compact-disc', 'animate-spin');
+                    musicIcon.classList.remove('fa-pause');
                     musicIcon.classList.add('fa-music');
+                    btnMusic.classList.remove('music-btn-pulse');
                 } else {
                     bgMusic.play();
-                    musicIcon.classList.add('fa-compact-disc', 'animate-spin');
+                    musicIcon.classList.add('fa-pause');
                     musicIcon.classList.remove('fa-music');
+                    btnMusic.classList.add('music-btn-pulse');
                 }
                 isPlaying = !isPlaying;
             });
 
-            // 5. Cuenta Regresiva Cumpleaños (Aprox. en 3 meses)
+            // 2. Cuenta Regresiva Fija (Ejemplo: en 1 mes)
             const futureDate = new Date();
-            futureDate.setMonth(futureDate.getMonth() + 3);
-            futureDate.setHours(21, 0, 0); // 9 PM Fiesta
+            futureDate.setMonth(futureDate.getMonth() + 1);
+            futureDate.setHours(21, 0, 0); 
             const partyDate = futureDate.getTime();
 
             const timerInterval = setInterval(() => {
@@ -538,7 +249,7 @@
 
                 if (distance < 0) {
                     clearInterval(timerInterval);
-                    document.getElementById("countdown").innerHTML = "<p class='text-3xl text-brand-neonPurple font-bebas w-full tracking-widest text-shadow animate-pulse'>¡LA FIESTA EMPEZÓ!</p>";
+                    document.getElementById("countdown").innerHTML = "<span class='text-xl'>¡Llegó el gran día!</span>";
                     return;
                 }
 
@@ -547,174 +258,7 @@
                 document.getElementById("minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
             }, 1000);
 
-            // 6. Generador de Confeti / Estrellas (Party mode)
-            const colors = ['#FFD700', '#B026FF', '#00F3FF', '#FFFFFF'];
-            function createParticle() {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-                
-                // Formas cuadradas o circulares para simular confeti
-                const isCircle = Math.random() > 0.5;
-                const size = Math.random() * 8 + 4; // 4px to 12px
-                
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                if(isCircle) particle.style.borderRadius = '50%';
-                
-                const left = Math.random() * 100;
-                const duration = Math.random() * 6 + 4; // Caída más rápida (fiesta)
-                
-                particle.style.left = `${left}%`;
-                particle.style.animationDuration = `${duration}s`;
-                particle.style.boxShadow = `0 0 5px ${particle.style.backgroundColor}`;
-                
-                document.body.appendChild(particle);
-                setTimeout(() => particle.remove(), duration * 1000);
-            }
-            for(let i=0; i<30; i++) setTimeout(createParticle, Math.random() * 3000);
-            setInterval(createParticle, 300);
         });
-    </script>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        let firebaseConfig = {};
-        try {
-            firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
-                apiKey: "mock-key", projectId: "mock-project"
-            };
-        } catch(e) { console.warn("Config no encontrada."); }
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
-        // ID de la app adaptado para el Cumpleaños
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'epic-birthday-demo';
-        const guestbookRef = collection(db, 'artifacts', appId, 'public', 'data', 'guestbook');
-
-        const container = document.getElementById('messages-container');
-        const loading = document.getElementById('gb-loading');
-        const form = document.getElementById('guestbook-form');
-        const btnSubmit = document.getElementById('gb-submit');
-
-        function renderMessages(messages) {
-            container.innerHTML = '';
-            if(messages.length === 0) {
-                container.innerHTML = '<div class="text-center text-white/40 text-xs py-4 font-bold uppercase tracking-widest">Nadie ha firmado aún. ¡Sé el primero!</div>';
-                return;
-            }
-            messages.forEach(msg => {
-                const div = document.createElement('div');
-                div.className = 'bg-black/50 rounded-xl p-3 border border-brand-gold/20 relative shadow-[0_2px_10px_rgba(0,0,0,0.5)]';
-                
-                const date = new Date(msg.timestamp);
-                const dateStr = `${date.getDate()}/${date.getMonth()+1} ${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`;
-
-                div.innerHTML = `
-                    <div class="flex justify-between items-start mb-1 border-b border-white/10 pb-1">
-                        <span class="font-bebas text-brand-goldLight tracking-wider text-lg">${escapeHTML(msg.name)}</span>
-                        <span class="text-[8px] text-brand-neonBlue font-bold">${dateStr}</span>
-                    </div>
-                    <p class="text-white/90 text-xs font-bold italic mt-2">"${escapeHTML(msg.message)}"</p>
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        function escapeHTML(str) {
-            return str.replace(/[&<>'"]/g, 
-                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag])
-            );
-        }
-
-        let useLocalStorageFallback = false;
-        const localKey = 'bday_guestbook_messages';
-
-        function loadLocalMessages() {
-            const stored = localStorage.getItem(localKey);
-            const messages = stored ? JSON.parse(stored) : [];
-            messages.sort((a, b) => b.timestamp - a.timestamp);
-            renderMessages(messages);
-        }
-
-        async function initGuestbook() {
-            form.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                
-                const nameInput = document.getElementById('gb-name');
-                const msgInput = document.getElementById('gb-message');
-                const nameVal = nameInput.value.trim();
-                const msgVal = msgInput.value.trim();
-                
-                if (!nameVal || !msgVal) return;
-
-                btnSubmit.disabled = true;
-                btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mandando...';
-
-                if (useLocalStorageFallback || firebaseConfig.apiKey === "mock-key") {
-                    const stored = localStorage.getItem(localKey);
-                    const messages = stored ? JSON.parse(stored) : [];
-                    messages.push({ name: nameVal, message: msgVal, timestamp: Date.now() });
-                    localStorage.setItem(localKey, JSON.stringify(messages));
-                    
-                    nameInput.value = ''; msgInput.value = '';
-                    loadLocalMessages(); 
-                    container.scrollTop = 0;
-                    
-                    btnSubmit.disabled = false;
-                    btnSubmit.innerHTML = '<i class="fa-solid fa-paper-plane mr-2"></i> Publicar en el Muro';
-                    return;
-                }
-
-                try {
-                    await addDoc(guestbookRef, {
-                        name: nameVal, message: msgVal, timestamp: Date.now()
-                    });
-                    nameInput.value = ''; msgInput.value = '';
-                    container.scrollTop = 0;
-                } catch(error) {
-                    console.error("Error:", error);
-                } finally {
-                    btnSubmit.disabled = false;
-                    btnSubmit.innerHTML = '<i class="fa-solid fa-paper-plane mr-2"></i> Publicar en el Muro';
-                }
-            });
-
-            try {
-                if(firebaseConfig.apiKey === "mock-key") {
-                    useLocalStorageFallback = true;
-                    if(loading) loading.style.display = 'none';
-                    loadLocalMessages();
-                    return;
-                }
-
-                await signInAnonymously(auth);
-                
-                onSnapshot(guestbookRef, (snapshot) => {
-                    if(loading) loading.style.display = 'none';
-                    const messages = [];
-                    snapshot.forEach(doc => messages.push({ id: doc.id, ...doc.data() }));
-                    messages.sort((a, b) => b.timestamp - a.timestamp);
-                    renderMessages(messages);
-                }, (error) => {
-                    useLocalStorageFallback = true;
-                    if(loading) loading.style.display = 'none';
-                    loadLocalMessages();
-                });
-
-            } catch (error) {
-                useLocalStorageFallback = true;
-                if(loading) loading.style.display = 'none';
-                loadLocalMessages();
-            }
-        }
-
-        initGuestbook();
     </script>
 </body>
 </html>
