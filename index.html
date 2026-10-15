@@ -4,457 +4,760 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>No Más Confirma | Invitaciones Digitales</title>
-    <!-- Cargando Tailwind CSS -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Cargando FontAwesome para íconos -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.25);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(-45deg, #41295a, #2F0743, #1f0430, #ff416c);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #ffffff;
+            overflow-x: hidden;
+            /* Scrollbar estándar para Firefox */
+            scrollbar-width: thin;
+            scrollbar-color: #ff416c rgba(255,255,255,0.05);
+        }
+
+        /* --- Custom Webkit Scrollbar (Chrome, Safari, Edge) --- */
+        ::-webkit-scrollbar {
+            width: 10px; /* Barra delgada y estética */
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3); /* Fondo oscuro semitransparente */
+            backdrop-filter: blur(10px);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #ff4b2b, #ff416c); /* Gradiente vibrante */
+            border-radius: 10px; /* Bordes redondeados */
+            border: 2px solid rgba(0,0,0,0.3); /* Separación para dar efecto flotante */
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, #ff416c, #ff4b2b); /* Inversión al pasar el mouse */
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Glassmorphism Classes */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+        }
+
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        /* Animations */
+        .fade-in { animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        .slide-up { animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards; opacity: 0; }
         
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background-color: #0f172a; 
-            color: white; 
-            overflow-x: hidden; 
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Mini Phone Mockup for Examples */
+        .phone-mockup {
+            width: 140px;
+            height: 280px;
+            border-radius: 24px;
+            border: 6px solid #1a1a1a;
+            background: #000;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
         }
         
-        .glass { 
-            background: rgba(255, 255, 255, 0.03); 
-            backdrop-filter: blur(10px); 
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.05); 
+        .phone-notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 15px;
+            background: #1a1a1a;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            z-index: 10;
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 10px;
+        }
+
+        /* View switching */
+        .view-section {
+            display: none;
+            min-height: 100vh;
+        }
+        .view-section.active {
+            display: flex;
         }
         
-        /* Scrollbar personalizado moderno */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: linear-gradient(to bottom, #ec4899, #8b5cf6); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: linear-gradient(to bottom, #db2777, #7c3aed); }
+        /* Floating shapes for visual depth */
+        .shape { position: fixed; filter: blur(50px); z-index: -1; }
+        .shape-1 { top: -10%; left: -10%; width: 400px; height: 400px; background: rgba(255, 65, 108, 0.4); border-radius: 50%; }
+        .shape-2 { bottom: -10%; right: -10%; width: 500px; height: 500px; background: rgba(65, 41, 90, 0.6); border-radius: 50%; }
+        .shape-3 { top: 40%; left: 30%; width: 300px; height: 300px; background: rgba(255, 181, 167, 0.2); border-radius: 50%; }
+
+        @keyframes stickerFloat {
+            0% { transform: translateY(110vh) rotate(-15deg) scale(0.8); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-20vh) rotate(25deg) scale(1.2); opacity: 0; }
+        }
+        
+        .sticker-anim {
+            position: fixed;
+            animation: stickerFloat linear infinite;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5));
+            z-index: 0;
+        }
     </style>
 </head>
-<body class="antialiased min-h-screen flex flex-col relative">
+<body class="antialiased min-h-screen relative">
 
-    <nav class="p-4 glass sticky top-0 z-50 flex justify-between items-center shadow-lg">
-        <div class="text-xl md:text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500 cursor-pointer transition transform hover:scale-105" onclick="volver()">
-            No Más Confirma
-        </div>
-        <div class="flex gap-2 md:gap-4">
-            <a href="https://ig.me/m/usuario_de_prueba" target="_blank" class="glass px-3 py-2 rounded-full font-bold flex items-center gap-2 hover:bg-white/10 transition text-sm">
-                <i class="fab fa-instagram text-pink-500 text-lg"></i> <span class="hidden md:inline">Instagram</span>
-            </a>
-            <a href="https://ig.me/m/usuario_de_prueba" target="_blank" class="bg-gradient-to-r from-pink-500 to-violet-500 px-3 py-2 rounded-full font-bold flex items-center gap-2 hover:opacity-90 transition shadow-lg shadow-pink-500/30 text-sm">
-                <i class="far fa-paper-plane text-lg"></i> <span class="hidden md:inline">Mensaje</span>
-            </a>
+    <!-- Contenedor para Stickers Infantiles -->
+    <div id="kids-stickers" class="fixed inset-0 z-0 pointer-events-none hidden overflow-hidden"></div>
+
+    <!-- Background Shapes -->
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+
+    <nav class="fixed w-full z-50 glass px-6 py-4 top-0">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="showView('home-view')">
+                <i class="fa-solid fa-paper-plane text-2xl text-pink-400"></i>
+                <h1 class="text-xl md:text-2xl font-bold tracking-tight">No Más <span class="text-pink-400">Confirma</span></h1>
+            </div>
+            <div class="flex items-center gap-2 md:gap-3">
+                <!-- Botón DM Instagram -->
+                <a href="https://ig.me/m/usuario_de_prueba" target="_blank" title="Enviar Mensaje Directo" class="glass-card px-3 md:px-4 py-2 rounded-full font-semibold text-xs md:text-sm hover:bg-pink-500 hover:border-pink-400 transition-all duration-300 flex items-center gap-2">
+                    <i class="fa-regular fa-paper-plane text-pink-300 md:text-lg"></i> <span class="hidden sm:inline">Mensaje</span>
+                </a>
+                <!-- Botón Perfil Instagram -->
+                <a href="https://instagram.com/usuario_de_prueba" target="_blank" title="Visitar Perfil" class="glass-card px-3 md:px-4 py-2 rounded-full font-semibold text-xs md:text-sm hover:bg-gradient-to-tr hover:from-yellow-400 hover:via-pink-500 hover:to-purple-600 hover:border-transparent transition-all duration-300 flex items-center gap-2 group">
+                    <i class="fa-brands fa-instagram text-white md:text-lg group-hover:scale-110 transition-transform"></i> <span class="hidden sm:inline">Instagram</span>
+                </a>
+            </div>
         </div>
     </nav>
 
-    <main id="main-container" class="flex-grow transition-colors duration-700 bg-transparent flex flex-col">
-        
-        <!-- VITRINA PRINCIPAL -->
-        <div id="vitrina" class="container mx-auto px-4 py-8 md:py-12">
-            <div class="text-center mb-10">
-                <h1 class="text-4xl md:text-6xl font-black mb-4 leading-tight">
-                    Invitaciones que <br>
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-violet-500 drop-shadow-lg">sí emocionan</span>
-                </h1>
-                <p class="text-base md:text-lg text-gray-300 max-w-2xl mx-auto px-4">
-                    Selecciona el tipo de evento y descubre cómo podemos hacer que tu invitación sea inolvidable en el celular de tus invitados.
-                </p>
-            </div>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto" id="vitrina-grid">
-                <!-- Se llena con JS -->
-            </div>
+    <main id="home-view" class="view-section active flex-col pt-24 pb-12 px-4 md:px-8 max-w-7xl mx-auto fade-in">
+        <!-- Hero Section -->
+        <div class="text-center mt-10 md:mt-16 mb-16 slide-up" style="animation-delay: 0.1s;">
+            <h2 class="text-4xl md:text-6xl lg:text-7xl font-extrabold mb-4 leading-tight">
+                Olvida el papel, <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-orange-400">vive la experiencia.</span>
+            </h2>
+            <p class="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto mb-8 font-light">
+                Invitaciones digitales interactivas para que tus invitados digan <strong>"Sí, voy"</strong> en un solo clic. ¿Qué tipo de evento celebras hoy?
+            </p>
         </div>
 
-        <!-- SECCIÓN DE PAQUETES (Diseño Compacto para una sola pantalla) -->
-        <div id="paquetes" class="container mx-auto px-4 py-4 md:py-8 hidden flex-col justify-center flex-grow">
-            <div class="relative max-w-6xl mx-auto w-full">
-                <!-- Botón de regreso integrado en la cabecera para ahorrar espacio vertical -->
-                <div class="absolute left-0 top-0 hidden md:block">
-                    <button onclick="volver()" class="text-gray-300 hover:text-white flex items-center gap-2 font-bold transition glass px-4 py-2 rounded-full hover:bg-white/10 text-sm">
-                        <i class="fas fa-arrow-left"></i> Volver
-                    </button>
+        <!-- Vitrina (Grid de Servicios) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 slide-up" style="animation-delay: 0.3s;">
+            
+            <!-- Item: Boda -->
+            <div onclick="openCategory('bodas')" class="glass-card rounded-3xl p-8 cursor-pointer flex flex-col items-center text-center group">
+                <div class="w-20 h-20 rounded-full glass flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                    <i class="fa-solid fa-ring text-3xl text-yellow-300 drop-shadow-[0_0_10px_rgba(253,224,71,0.8)]"></i>
                 </div>
-                
-                <div class="text-center mb-6 mt-2 md:mt-0">
-                    <button onclick="volver()" class="md:hidden text-gray-300 hover:text-white flex items-center gap-2 font-bold transition glass px-4 py-2 rounded-full mx-auto mb-4 hover:bg-white/10 text-sm">
-                        <i class="fas fa-arrow-left"></i> Volver a Eventos
-                    </button>
-                    <h2 id="event-title" class="text-3xl md:text-5xl font-black mb-2 drop-shadow-lg"></h2>
-                    <p id="event-subtitle" class="text-sm md:text-base text-gray-200 font-medium"></p>
-                    <!-- Nota de personalización global (ahorra espacio en las tarjetas) -->
-                    <div class="inline-block mt-3 bg-pink-500/10 border border-pink-500/20 py-1 px-4 rounded-full">
-                        <p class="text-xs md:text-sm text-pink-300 font-medium">
-                            <i class="fas fa-paint-brush mr-1"></i> <b>100% Personalizable:</b> Ajustamos colores, fotos y música en cualquier paquete.
-                        </p>
-                    </div>
-                </div>
-                
-                <!-- Grid de paquetes más compacto -->
-                <div id="packages-grid" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <!-- Se llena con JS -->
-                </div>
+                <h3 class="text-2xl font-bold mb-2">Bodas</h3>
+                <p class="text-sm text-gray-300">Elegancia y control total. Mesa de regalos, mapas y confirmación inmediata.</p>
             </div>
+
+            <!-- Item: Cumpleaños -->
+            <div onclick="openCategory('cumpleanos')" class="glass-card rounded-3xl p-8 cursor-pointer flex flex-col items-center text-center group">
+                <div class="w-20 h-20 rounded-full glass flex items-center justify-center mb-4 group-hover:scale-110 group-hover:-rotate-6 transition-all duration-300">
+                    <i class="fa-solid fa-cake-candles text-3xl text-pink-300 drop-shadow-[0_0_10px_rgba(244,114,182,0.8)]"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">Cumpleaños</h3>
+                <p class="text-sm text-gray-300">Divertidas, con música de fondo y cuenta regresiva para la fiesta.</p>
+            </div>
+
+            <!-- Item: Infantiles -->
+            <div onclick="openCategory('infantiles')" class="glass-card rounded-3xl p-8 cursor-pointer flex flex-col items-center text-center group">
+                <div class="w-20 h-20 rounded-full glass flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                    <i class="fa-solid fa-ice-cream text-3xl text-cyan-300 drop-shadow-[0_0_10px_rgba(103,232,249,0.8)]"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">Infantiles</h3>
+                <p class="text-sm text-gray-300">Magia, color y temáticas increíbles para los peques de la casa.</p>
+            </div>
+
+            <!-- Item: Despedidas -->
+            <div onclick="openCategory('despedidas')" class="glass-card rounded-3xl p-8 cursor-pointer flex flex-col items-center text-center group">
+                <div class="w-20 h-20 rounded-full glass flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                    <i class="fa-solid fa-martini-glass-citrus text-3xl text-purple-300 drop-shadow-[0_0_10px_rgba(216,180,254,0.8)]"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">Despedidas</h3>
+                <p class="text-sm text-gray-300">Diseños atrevidos y dinámicos para solteros y solteras. ¡Que empiece el caos!</p>
+            </div>
+
+            <!-- Item: Graduaciones -->
+            <div onclick="openCategory('graduaciones')" class="glass-card rounded-3xl p-8 cursor-pointer flex flex-col items-center text-center group">
+                <div class="w-20 h-20 rounded-full glass flex items-center justify-center mb-4 group-hover:scale-110 group-hover:-rotate-6 transition-all duration-300">
+                    <i class="fa-solid fa-user-graduate text-3xl text-blue-300 drop-shadow-[0_0_10px_rgba(147,197,253,0.8)]"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">Graduaciones</h3>
+                <p class="text-sm text-gray-300">Celebra tu logro con estilo. Pases QR para control de acceso y galería.</p>
+            </div>
+
+            <!-- Item: XV Años -->
+            <div onclick="openCategory('xvanos')" class="glass-card rounded-3xl p-8 cursor-pointer flex flex-col items-center text-center group">
+                <div class="w-20 h-20 rounded-full glass flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                    <i class="fa-solid fa-crown text-3xl text-rose-300 drop-shadow-[0_0_10px_rgba(253,164,175,0.8)]"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">XV Años</h3>
+                <p class="text-sm text-gray-300">Magia en cada detalle. Colores pastel, sugerencia de vestimenta y pases.</p>
+            </div>
+
+            <!-- Item: Personalizado -->
+            <div onclick="openCategory('otros')" class="glass-card rounded-3xl p-8 cursor-pointer flex flex-col items-center text-center group">
+                <div class="w-20 h-20 rounded-full glass flex items-center justify-center mb-4 group-hover:scale-110 group-hover:-rotate-6 transition-all duration-300">
+                    <i class="fa-solid fa-wand-magic-sparkles text-3xl text-green-300 drop-shadow-[0_0_10px_rgba(134,239,172,0.8)]"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">Lo que se te ocurra</h3>
+                <p class="text-sm text-gray-300">Bautizos, eventos corporativos, baby showers... Lo diseñamos desde cero.</p>
+            </div>
+
         </div>
     </main>
 
-    <!-- VENTANA MODAL DEL DEMO (Celular) -->
-    <div id="demo-modal" class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm hidden items-center justify-center p-4">
-        <div class="relative w-full max-w-[360px] h-[80vh] min-h-[600px] max-h-[800px] transform transition-all duration-300 scale-95 opacity-0 flex flex-col items-center">
-            <button onclick="cerrarDemo()" class="absolute -top-14 right-0 text-white hover:text-pink-500 bg-white/10 rounded-full w-12 h-12 flex items-center justify-center transition shadow-lg">
-                <i class="fas fa-times text-2xl"></i>
-            </button>
+    <main id="packages-view" class="view-section flex-col pt-24 pb-12 px-4 md:px-8 max-w-7xl mx-auto">
+        
+        <!-- Banner con Imagen Temática -->
+        <div class="relative w-full h-64 md:h-80 rounded-[2rem] overflow-hidden mb-12 shadow-2xl border border-white/20 flex items-end p-6 md:p-10 slide-up group">
+            <!-- Imagen de fondo que se inyecta por JS -->
+            <div id="banner-bg" class="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-105"></div>
+            <!-- Gradiente oscuro para que el texto sea legible siempre -->
+            <div class="absolute inset-0 bg-gradient-to-t from-[#1f0430] via-[#1f0430]/70 to-transparent"></div>
             
-            <div class="w-full h-full bg-black rounded-[3rem] border-[8px] border-gray-800 shadow-[0_0_50px_rgba(236,72,153,0.3)] relative overflow-hidden flex flex-col">
-                <div class="absolute top-0 inset-x-0 h-6 bg-gray-800 rounded-b-3xl w-40 mx-auto z-10"></div>
-                <iframe id="demo-iframe" src="" class="w-full h-full border-0 bg-white" title="Demo Interactiva"></iframe>
+            <div class="relative z-10 w-full flex flex-col sm:flex-row sm:items-end gap-6 justify-between">
+                <div class="flex items-center gap-5">
+                    <!-- BOTÓN VOLVER CORREGIDO (z-50, cursor-pointer y texto visible) -->
+                    <button onclick="showView('home-view')" class="glass px-5 py-3 rounded-full flex items-center justify-center gap-3 hover:bg-white/30 transition-all shadow-lg shrink-0 text-lg md:text-xl font-bold cursor-pointer relative z-50 pointer-events-auto">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        <span class="hidden sm:inline">Volver</span>
+                    </button>
+                    <div>
+                        <h2 id="cat-title" class="text-4xl md:text-6xl font-extrabold text-white drop-shadow-lg tracking-tight">Categoría</h2>
+                        <p id="cat-subtitle" class="text-pink-200 font-medium mt-1 text-lg md:text-xl drop-shadow-md">Selecciona el paquete perfecto</p>
+                    </div>
+                </div>
             </div>
-            <p class="text-gray-300 text-sm mt-6 text-center font-medium bg-black/50 py-2 px-4 rounded-full border border-gray-700">
-                <i class="fas fa-info-circle text-pink-400 mr-1"></i> Navega como si estuvieras en tu celular.
-            </p>
         </div>
+
+        <!-- 3 Packages Container -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start" id="packages-container">
+            <!-- Los paquetes se inyectan via JavaScript -->
+        </div>
+
+        <!-- BOTÓN VOLVER INFERIOR (Añadido para mejor UX) -->
+        <div class="mt-12 flex justify-center pb-8 fade-in" style="animation-delay: 0.5s;">
+            <button onclick="showView('home-view')" class="glass px-8 py-4 rounded-full font-bold text-white hover:bg-white/20 transition-all shadow-lg flex items-center gap-3 cursor-pointer">
+                <i class="fa-solid fa-arrow-left"></i> Volver a Categorías
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Ventana Modal para DEMO EN VIVO -->
+    <div id="demo-modal" class="fixed inset-0 z-[100] hidden flex-col items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-opacity duration-300 opacity-0">
+        
+        <!-- Contenedor formato Celular -->
+        <div class="glass relative w-full max-w-[375px] h-[80vh] md:h-[85vh] rounded-[2.5rem] overflow-hidden flex flex-col shadow-[0_0_50px_rgba(0,0,0,0.8)] border-[6px] border-[#1a1a1a] transform scale-95 transition-transform duration-300" id="demo-modal-content">
+            
+            <!-- Simulador de Notch superior del celular -->
+            <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-[#1a1a1a] rounded-b-xl z-20 flex justify-center items-center gap-2">
+                <div class="w-12 h-1.5 bg-gray-800 rounded-full"></div>
+                <div class="w-2 h-2 bg-blue-900/50 rounded-full"></div>
+            </div>
+
+            <!-- Cabecera del Demo -->
+            <div class="px-4 pt-8 pb-3 bg-gradient-to-b from-black/80 to-black/20 flex justify-between items-center z-10 relative">
+                <div class="flex flex-col">
+                    <span class="text-[10px] text-pink-400 font-bold uppercase tracking-widest">Ejemplo Interactivo</span>
+                    <h3 id="demo-title" class="font-bold text-sm text-white tracking-wide">Paquete</h3>
+                </div>
+                <button onclick="closeDemo()" class="w-8 h-8 rounded-full glass hover:bg-red-500 flex items-center justify-center text-white transition-all shadow-lg">
+                    <i class="fa-solid fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Iframe Container (Aquí se carga la invitación) -->
+            <div class="relative flex-1 bg-[#0f0514]">
+                <!-- Spinner de carga -->
+                <div id="demo-loader" class="absolute inset-0 flex flex-col items-center justify-center z-0 text-pink-400">
+                    <i class="fa-solid fa-circle-notch fa-spin text-5xl mb-4 drop-shadow-[0_0_10px_rgba(255,65,108,0.8)]"></i>
+                    <span class="text-xs font-semibold tracking-widest uppercase text-white animate-pulse">Cargando Experiencia...</span>
+                </div>
+                <!-- Iframe -->
+                <iframe id="demo-iframe" src="" class="absolute inset-0 w-full h-full border-0 z-10 bg-transparent" onload="document.getElementById('demo-loader').style.display='none'"></iframe>
+            </div>
+        </div>
+        
+        <p class="text-gray-400 text-xs mt-6 font-medium tracking-wide">Toca fuera para cerrar</p>
     </div>
 
     <script>
-        const eventos = {
+        const eventData = {
             bodas: {
-                title: "Bodas Elegantes",
-                subtitle: "El inicio de su historia merece una invitación perfecta.",
-                image: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=1000",
-                theme: "linear-gradient(to bottom, #0f172a, rgba(253,251,251,0.1))",
-                icon: "fa-ring",
+                title: "Bodas",
+                subtitle: "El inicio de su 'Felices para siempre'.",
+                image: "https://images.pexels.com/photos/256737/pexels-photo-256737.jpeg?auto=compress&cs=tinysrgb&w=2000",
+                theme: "linear-gradient(to bottom, #d4af37, #fff)", // Gold theme
                 packages: [
                     {
-                        name: "Esencial",
-                        price: "$599",
-                        visual: { title: "Diana & Luis", demoUrl: "https://nomasconfirma.github.io/demo-boda/esencial/" },
-                        features: ["Diseño romántico predefinido", "Ubicación en Google Maps", "Confirmación por WhatsApp", "Música de fondo"]
+                        name: "Esencial", price: "$499", desc: "Para bodas íntimas. Elegante y directo al punto.",
+                        features: ["Diseño estático elegante", "Confirmación por WhatsApp", "Ubicación en Google Maps", "Sugerencia de vestimenta"],
+                        visual: { bg: "#fdfbf7", title: "Diana & Luis", icon: "fa-ring", element: "24.Dic.26" },
+                        demoUrl: "https://nomasconfirma.github.io/demo-boda/esencial/"
                     },
                     {
-                        name: "Experiencia",
-                        price: "$999",
-                        recommended: true,
-                        visual: { title: "Diana & Luis", demoUrl: "https://nomasconfirma.github.io/demo-boda/experiencia/" },
-                        features: ["Todo lo del paquete Esencial", "Cuenta regresiva animada", "Sugerencia de regalos (Mesa/Efectivo)"]
+                        name: "Experiencia", price: "$899", desc: "El favorito. Totalmente interactivo y animado.", featured: true,
+                        features: ["Todo lo del paquete Esencial", "Cuenta regresiva animada", "Música de fondo", "Mesa de regalos enlazada"],
+                        visual: { bg: "#e6d7c3", title: "Diana & Luis", icon: "fa-champagne-glasses", element: "Faltan 45 días" },
+                        demoUrl: "https://nomasconfirma.github.io/demo-boda/experiencia/"
                     },
                     {
-                        name: "Diamante",
-                        price: "$1,499",
-                        visual: { title: "Diana & Luis", demoUrl: "https://nomasconfirma.github.io/demo-boda/diamante/" },
-                        features: ["Todo lo del paquete Experiencia", "Libro de firmas virtual", "Línea de tiempo (Love Story)", "Asignación de mesas"]
-                    }
-                ]
-            },
-            cumpleanos: {
-                title: "Cumpleaños",
-                subtitle: "Celebra un año más de vida con estilo y mucha diversión.",
-                image: "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&q=80&w=1000",
-                theme: "linear-gradient(to bottom, #0f172a, rgba(255,154,158,0.1))",
-                icon: "fa-birthday-cake",
-                packages: [
-                    {
-                        name: "Clásico",
-                        price: "$399",
-                        visual: { title: "Mi Cumple", demoUrl: "https://nomasconfirma.github.io/demo-cumpleanos/clasico/" },
-                        features: ["Diseño festivo predefinido", "Ubicación en Google Maps", "Confirmación por WhatsApp", "Música de fondo"]
-                    },
-                    {
-                        name: "Estrella",
-                        price: "$699",
-                        recommended: true,
-                        visual: { title: "Mi Cumple", demoUrl: "https://nomasconfirma.github.io/demo-cumpleanos/estrella/" },
-                        features: ["Todo lo del paquete Clásico", "Cuenta regresiva animada", "Sugerencia de regalos"]
-                    },
-                    {
-                        name: "Épico",
-                        price: "$999",
-                        visual: { title: "Mi Cumple VIP", demoUrl: "https://nomasconfirma.github.io/demo-cumpleanos/epico/" },
-                        features: ["Todo lo del paquete Estrella", "Libro de firmas virtual", "Galería de fotos interactiva"]
+                        name: "Diamante", price: "$1,499", desc: "La experiencia VIP para bodas de lujo.",
+                        features: ["Todo lo del paquete Experiencia", "Libro de firmas virtual", "Línea de tiempo (Love Story)", "Galería de fotos interactiva"],
+                        visual: { bg: "#2c2c2c", title: "Diana & Luis", icon: "fa-gem", element: "Nuestra Historia" },
+                        demoUrl: "https://nomasconfirma.github.io/demo-boda/diamante/"
                     }
                 ]
             },
             infantiles: {
                 title: "Fiestas Infantiles",
-                subtitle: "Magia, superhéroes y diversión con su temática favorita.",
-                image: "https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&q=80&w=1000", 
-                theme: "linear-gradient(to bottom, #0f172a, rgba(79,172,254,0.1))",
-                icon: "fa-child",
+                subtitle: "Magia y diversión con su temática favorita.",
+                image: "https://images.pexels.com/photos/27788075/pexels-photo-27788075.jpeg?auto=compress&cs=tinysrgb&w=2000",
+                theme: "linear-gradient(to bottom, #4facfe, #00f2fe)",
                 packages: [
                     {
-                        name: "Aventura",
-                        price: "$399",
-                        visual: { title: "Mi Fiesta", demoUrl: "https://nomasconfirma.github.io/demo-infantil/aventura/" },
-                        features: ["Diseño de su personaje favorito", "Ubicación en Google Maps", "Confirmación por WhatsApp"]
+                        name: "Aventura", price: "$399", desc: "Colorida y directa al punto para los amiguitos.",
+                        features: ["Diseño estático temático", "Confirmación por WhatsApp", "Ubicación en Google Maps", "Sugerencia de regalos"],
+                        visual: { bg: "#caffbf", title: "Mis 5 Años", icon: "fa-puzzle-piece", element: "Sábado 4 PM" },
+                        demoUrl: "https://nomasconfirma.github.io/demo-infantil/aventura/"
                     },
                     {
-                        name: "Mágico",
-                        price: "$699",
-                        recommended: true,
-                        visual: { title: "Mi Fiesta", demoUrl: "https://nomasconfirma.github.io/demo-infantil/magico/" },
-                        features: ["Todo lo del paquete Aventura", "Cuenta regresiva animada", "Música de fondo"]
+                        name: "Mágico", price: "$699", desc: "Con música y animación del personaje favorito.", featured: true,
+                        features: ["Todo lo del paquete Aventura", "Cuenta regresiva animada", "Música de fondo infantil", "Mesa de regalos o sobre"],
+                        visual: { bg: "#ffd6a5", title: "Súper Fiesta", icon: "fa-rocket", element: "Faltan 10 días" },
+                        demoUrl: "https://nomasconfirma.github.io/demo-infantil/magico/"
                     },
                     {
-                        name: "Fantasía",
-                        price: "$999",
-                        visual: { title: "Mi Fiesta VIP", demoUrl: "https://nomasconfirma.github.io/demo-infantil/fantasia/" },
-                        features: ["Todo lo del paquete Mágico", "Galería de fotos del festejado", "Pase VIP interactivo"]
+                        name: "Fantasía", price: "$999", desc: "Interactividad total para una fiesta espectacular.",
+                        features: ["Todo lo del paquete Mágico", "Pase de abordar (boleto virtual)", "Galería de fotos del cumpleañero", "Libro de buenos deseos"],
+                        visual: { bg: "#9bf6ff", title: "Mundo Mágico", icon: "fa-wand-magic-sparkles", element: "Pase VIP" },
+                        demoUrl: "https://nomasconfirma.github.io/demo-infantil/fantasia/"
+                    }
+                ]
+            },
+            cumpleanos: {
+                title: "Cumpleaños",
+                subtitle: "Un año más de vida merece una gran entrada.",
+                image: "https://images.pexels.com/photos/796606/pexels-photo-796606.jpeg?auto=compress&cs=tinysrgb&w=2000",
+                theme: "linear-gradient(to bottom, #ff0a54, #ffb5a7)",
+                packages: [
+                    {
+                        name: "Clásico", price: "$399", desc: "Práctico y muy bonito.",
+                        features: ["Diseño estático temático", "Confirmación por WhatsApp", "Ubicación en Google Maps", "Sugerencia de vestimenta"],
+                        visual: { bg: "#a2d2ff", title: "Mis 25", icon: "fa-cake-candles", element: "¡No faltes!" },
+                        demoUrl: "https://nomasconfirma.github.io/demo-cumpleanos/clasico/"
+                    },
+                    {
+                        name: "Estrella", price: "$699", desc: "Con más dinamismo y sorpresas.", featured: true,
+                        features: ["Todo lo del paquete Clásico", "Cuenta regresiva animada", "Música de fondo", "Sugerencia de regalos"],
+                        visual: { bg: "#ffc8dd", title: "Party Time", icon: "fa-gift", element: "00:24:10" },
+                        demoUrl: "https://nomasconfirma.github.io/demo-cumpleanos/estrella/"
+                    },
+                    {
+                        name: "Épico", price: "$999", desc: "Tira la casa por la ventana.",
+                        features: ["Todo lo del paquete Estrella", "Libro de firmas virtual", "Galería de fotos interactiva", "Mesa de regalos enlazada"],
+                        visual: { bg: "#ffafcc", title: "Dirty 30", icon: "fa-crown", element: "Festejo Épico" },
+                        demoUrl: "https://nomasconfirma.github.io/demo-cumpleanos/epico/"
                     }
                 ]
             },
             despedidas: {
                 title: "Despedidas",
-                subtitle: "La última gran fiesta antes del 'Sí, acepto'.",
-                image: "https://images.unsplash.com/photo-1566737236500-c8ac43014a67?auto=format&fit=crop&q=80&w=1000",
-                theme: "linear-gradient(to bottom, #0f172a, rgba(161,140,209,0.1))",
-                icon: "fa-glass-cheers",
+                subtitle: "¡Que empiece el caos y la diversión!",
+                image: "https://images.pexels.com/photos/35895730/pexels-photo-35895730.jpeg?auto=compress&cs=tinysrgb&w=2000",
+                theme: "linear-gradient(to bottom, #7b2cbf, #c77dff)",
                 packages: [
                     {
-                        name: "Tranqui",
-                        price: "$399",
-                        visual: { title: "Despedida", demoUrl: "https://nomasconfirma.github.io/demo-despedidas/tranqui/" },
-                        features: ["Diseño divertido predefinido", "Ubicación en Google Maps", "Confirmación por WhatsApp", "Música de fondo"]
+                        name: "Pre-Copa", price: "$399", desc: "Sencillo y al grano para juntar a la banda.",
+                        features: ["Diseño estático temático", "Confirmación por WhatsApp", "Ubicación en Google Maps", "Código de vestimenta"],
+                        visual: { bg: "#f3e8ff", title: "Bye Soltería", icon: "fa-martini-glass-citrus", element: "Bar Central" },
+                        demoUrl: ""
                     },
                     {
-                        name: "Party Hard",
-                        price: "$699",
-                        recommended: true,
-                        visual: { title: "Despedida", demoUrl: "https://nomasconfirma.github.io/demo-despedidas/party-hard/" },
-                        features: ["Todo lo del paquete Tranqui", "Cuenta regresiva animada", "Itinerario de la noche"]
+                        name: "Party Hard", price: "$699", desc: "Interactivo con música para animar el grupo.", featured: true,
+                        features: ["Todo lo de Pre-Copa", "Cuenta regresiva animada", "Música de fiesta", "Itinerario del desastre"],
+                        visual: { bg: "#e0b1cb", title: "Bachelorette", icon: "fa-music", element: "Let's Go!" },
+                        demoUrl: ""
                     },
                     {
-                        name: "VIP Weekend",
-                        price: "$1,099",
-                        visual: { title: "Viaje VIP", demoUrl: "https://nomasconfirma.github.io/demo-despedidas/vip-weekend/" },
-                        features: ["Todo lo del paquete Party Hard", "Galería de fotos interactiva", "Información de vuelos/hotel"]
+                        name: "Hangover", price: "$999", desc: "El paquete completo para un viaje inolvidable.",
+                        features: ["Todo lo de Party Hard", "Galería de fotos privada", "Agenda de actividades", "Regalos de broma"],
+                        visual: { bg: "#3c096c", title: "Las Vegas", icon: "fa-plane", element: "VIP Pass" },
+                        demoUrl: ""
                     }
                 ]
             },
             graduaciones: {
                 title: "Graduaciones",
-                subtitle: "El final de una etapa, el comienzo de tu futuro.",
-                image: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80&w=1000",
-                theme: "linear-gradient(to bottom, #0f172a, rgba(132,250,176,0.1))",
-                icon: "fa-graduation-cap",
+                subtitle: "El fin de una etapa, el inicio de tu futuro.",
+                image: "https://images.pexels.com/photos/267885/pexels-photo-267885.jpeg?auto=compress&cs=tinysrgb&w=2000",
+                theme: "linear-gradient(to bottom, #03045e, #0077b6)",
                 packages: [
                     {
-                        name: "Generaciones",
-                        price: "$499",
-                        visual: { title: "Mi Graduación", demoUrl: "https://nomasconfirma.github.io/demo-graduaciones/generaciones/" },
-                        features: ["Diseño formal/elegante", "Ubicación en Google Maps", "Confirmación por WhatsApp", "Música de fondo"]
+                        name: "Generación", price: "$499", desc: "Información clara para tu familia.",
+                        features: ["Diseño estático elegante", "Confirmación por WhatsApp", "Ubicación en Google Maps", "Horarios de ceremonia"],
+                        visual: { bg: "#e0f2fe", title: "Generación '26", icon: "fa-graduation-cap", element: "Ceremonia 10AM" },
+                        demoUrl: "https://nomasconfirma.github.io/demo-graduaciones/generaciones/"
                     },
                     {
-                        name: "Prom Night",
-                        price: "$799",
-                        recommended: true,
-                        visual: { title: "Mi Graduación", demoUrl: "https://nomasconfirma.github.io/demo-graduaciones/prom-night/" },
-                        features: ["Todo lo del paquete Generaciones", "Cuenta regresiva animada", "Programa del evento"]
+                        name: "Prom Night", price: "$899", desc: "Para que la fiesta empiece online.", featured: true,
+                        features: ["Todo lo del paquete Generación", "Cuenta regresiva animada", "Música de fondo", "Sugerencia de vestimenta"],
+                        visual: { bg: "#023e8a", title: "Prom 2026", icon: "fa-music", element: "Let's Dance" },
+                        demoUrl: "https://nomasconfirma.github.io/demo-graduaciones/prom-night/"
                     },
                     {
-                        name: "Golden Grad",
-                        price: "$1,299",
-                        visual: { title: "Mi Graduación VIP", demoUrl: "https://nomasconfirma.github.io/demo-graduaciones/golden-grad/" },
-                        features: ["Todo lo del paquete Prom Night", "Libro de firmas virtual", "Galería de fotos de la generación"]
+                        name: "Golden Grad", price: "$1,399", desc: "Control total de tu evento de gala.",
+                        features: ["Todo lo del paquete Prom Night", "Muro de buenos deseos", "Asignación de mesas interactiva", "Galería de fotos interactiva"],
+                        visual: { bg: "#03045e", title: "Gala de Grado", icon: "fa-award", element: "Mesa 4 Asignada" },
+                        demoUrl: "https://nomasconfirma.github.io/demo-graduaciones/golden-grad/"
                     }
                 ]
             },
-            xv: {
+            xvanos: {
                 title: "XV Años",
-                subtitle: "Una noche mágica que recordarás toda la vida.",
-                image: "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&q=80&w=1000", 
-                theme: "linear-gradient(to bottom, #0f172a, rgba(251,194,235,0.1))",
-                icon: "fa-crown",
+                subtitle: "Magia y elegancia para tu momento soñado.",
+                image: "https://images.pexels.com/photos/18651224/pexels-photo-18651224.jpeg?auto=compress&cs=tinysrgb&w=2000",
+                theme: "linear-gradient(to bottom, #ffb5a7, #fcd5ce)",
                 packages: [
                     {
-                        name: "Princesa",
-                        price: "$599",
-                        visual: { title: "Mis XV", demoUrl: "https://nomasconfirma.github.io/demo-xv/princesa/" },
-                        features: ["Diseño juvenil y mágico", "Ubicación en Google Maps", "Confirmación por WhatsApp", "Música de fondo"]
+                        name: "Princesa", price: "$499", desc: "Delicada, bonita y funcional.",
+                        features: ["Diseño estático elegante", "Confirmación por WhatsApp", "Ubicación en Google Maps", "Sugerencia de vestimenta"],
+                        visual: { bg: "#ffe5ec", title: "Mis XV", icon: "fa-wand-magic-sparkles", element: "Iglesia 5 PM" },
+                        demoUrl: "https://nomasconfirma.github.io/demo-xv/princesa/"
                     },
                     {
-                        name: "Cuento de Hadas",
-                        price: "$899",
-                        recommended: true,
-                        visual: { title: "Mis XV", demoUrl: "https://nomasconfirma.github.io/demo-xv/cuento-de-hadas/" },
-                        features: ["Todo lo del paquete Princesa", "Cuenta regresiva animada", "Sugerencia de regalos (Mesa/Efectivo)"]
+                        name: "Cuento de Hadas", price: "$899", desc: "Llena de detalles interactivos.", featured: true,
+                        features: ["Todo lo del paquete Princesa", "Cuenta regresiva animada", "Música de fondo", "Sugerencia de regalos (Sobres)"],
+                        visual: { bg: "#fb6f92", title: "Sweet 15", icon: "fa-crown", element: "Faltan 20 días" },
+                        demoUrl: "https://nomasconfirma.github.io/demo-xv/cuento-de-hadas/"
                     },
                     {
-                        name: "Reyna de la Noche",
-                        price: "$1,399",
-                        visual: { title: "Mis XV VIP", demoUrl: "https://nomasconfirma.github.io/demo-xv/reyna-de-la-noche/" },
-                        features: ["Todo lo del paquete Cuento de Hadas", "Libro de firmas virtual", "Galería de fotos", "Corte de honor"]
-                    }
-                ]
-            },
-            eventoUnico: {
-                title: "Tu Evento Único",
-                subtitle: "Adaptamos cualquier idea que tengas en mente.",
-                image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&q=80&w=1000",
-                theme: "linear-gradient(to bottom, #0f172a, rgba(44,62,80,0.2))",
-                icon: "fa-magic",
-                packages: [
-                    {
-                        name: "Básico",
-                        price: "$499",
-                        visual: { title: "Mi Evento", demoUrl: "https://nomasconfirma.github.io/demo-evento-unico/basico/" },
-                        features: ["Diseño adaptado a tu tema", "Ubicación en Google Maps", "Confirmación por WhatsApp", "Música de fondo"]
-                    },
-                    {
-                        name: "Estándar",
-                        price: "$899",
-                        recommended: true,
-                        visual: { title: "Mi Evento", demoUrl: "https://nomasconfirma.github.io/demo-evento-unico/estandar/" },
-                        features: ["Todo lo del paquete Básico", "Cuenta regresiva animada", "Itinerario del evento"]
-                    },
-                    {
-                        name: "Premium",
-                        price: "$1,499",
-                        visual: { title: "Mi Evento VIP", demoUrl: "https://nomasconfirma.github.io/demo-evento-unico/premium/" },
-                        features: ["Todo lo del paquete Estándar", "Libro de firmas virtual", "Galería de fotos interactiva"]
+                        name: "Reyna de la Noche", price: "$1,399", desc: "Control de invitados y experiencia total.",
+                        features: ["Todo lo del paquete Cuento de Hadas", "Libro de firmas virtual", "Corte de honor (Padrinos)", "Galería de fotos interactiva"],
+                        visual: { bg: "#2a0800", title: "Gala XV", icon: "fa-star", element: "Gran Recepción" },
+                        demoUrl: "https://nomasconfirma.github.io/demo-xv/reyna-de-la-noche/"
                     }
                 ]
             }
         };
 
-        window.onload = function() {
-            const grid = document.getElementById('vitrina-grid');
-            grid.innerHTML = '';
-            
-            for (const [key, data] of Object.entries(eventos)) {
-                grid.innerHTML += `
-                    <div onclick="mostrarPaquetes('${key}')" class="glass rounded-[2rem] overflow-hidden cursor-pointer transform transition duration-500 hover:scale-105 hover:-translate-y-2 group shadow-xl">
-                        <div class="h-48 relative overflow-hidden">
-                            <img src="${data.image}" onerror="this.onerror=null;this.src='https://placehold.co/800x600/1e293b/ec4899?text=${encodeURIComponent(data.title)}';" alt="${data.title}" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
-                            <div class="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-[#0f172a]/50 to-transparent"></div>
-                            <div class="absolute bottom-4 right-4 w-10 h-10 rounded-full glass flex items-center justify-center group-hover:bg-pink-500 transition duration-300">
-                                <i class="fas ${data.icon} text-lg text-white"></i>
-                            </div>
-                        </div>
-                        <div class="p-5">
-                            <h3 class="text-xl font-bold text-white mb-1 group-hover:text-pink-400 transition">${data.title}</h3>
-                            <p class="text-gray-400 text-xs leading-relaxed line-clamp-2">${data.subtitle}</p>
-                        </div>
-                    </div>
-                `;
-            }
-        };
-
-        function mostrarPaquetes(categoria) {
-            const data = eventos[categoria];
-            document.getElementById('event-title').innerText = data.title;
-            document.getElementById('event-subtitle').innerText = data.subtitle;
-            
-            const mainContainer = document.getElementById('main-container');
-            mainContainer.style.background = data.theme;
-            
-            const packagesGrid = document.getElementById('packages-grid');
-            packagesGrid.innerHTML = '';
-            
-            data.packages.forEach(pkg => {
-                const isRecommended = pkg.recommended;
-                const card = document.createElement('div');
-                
-                // Redujimos los paddings de la tarjeta para que sea más compacta (p-4 md:p-6 en vez de p-6 md:p-8)
-                card.className = `glass p-4 md:p-5 rounded-3xl relative flex flex-col justify-between transform transition duration-500 hover:-translate-y-1 ${isRecommended ? 'border-2 border-pink-500 shadow-[0_0_30px_rgba(236,72,153,0.15)] bg-gradient-to-b from-white/5 to-transparent' : ''}`;
-                
-                let html = '';
-                if (isRecommended) {
-                    html += `<div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-pink-500 to-violet-500 text-white px-4 py-1 rounded-full text-xs font-bold shadow-lg flex items-center gap-1"><i class="fas fa-star text-[10px]"></i> Más Popular</div>`;
+        const defaultData = {
+            title: "Tu Evento Único",
+            subtitle: "Diseñamos a la medida de lo que imaginas.",
+            image: "https://images.pexels.com/photos/1190298/pexels-photo-1190298.jpeg?auto=compress&cs=tinysrgb&w=2000",
+            theme: "linear-gradient(to bottom, #00b4d8, #caf0f8)",
+            packages: [
+                {
+                    name: "Básico", price: "$499", desc: "Lo esencial para invitar.",
+                    features: ["Diseño estático personalizado", "Confirmación por WhatsApp", "Ubicación en Google Maps", "Sugerencia de vestimenta"],
+                    visual: { bg: "#f8f9fa", title: "Mi Evento", icon: "fa-calendar-check", element: "Fecha" },
+                    demoUrl: "https://nomasconfirma.github.io/demo-evento-unico/basico/"
+                },
+                {
+                    name: "Estándar", price: "$799", desc: "Interactivo y memorable.", featured: true,
+                    features: ["Todo lo del paquete Básico", "Cuenta regresiva animada", "Música de fondo", "Mesa de regalos o itinerario"],
+                    visual: { bg: "#e9ecef", title: "Invitación", icon: "fa-music", element: "Play Music" },
+                    demoUrl: "https://nomasconfirma.github.io/demo-evento-unico/estandar/"
+                },
+                {
+                    name: "Premium", price: "$1,299", desc: "La experiencia completa.",
+                    features: ["Todo lo del paquete Estándar", "Libro de firmas virtual", "Línea de tiempo interactiva", "Galería de fotos interactiva"],
+                    visual: { bg: "#343a40", title: "VIP", icon: "fa-star", element: "Día Especial" },
+                    demoUrl: "https://nomasconfirma.github.io/demo-evento-unico/premium/"
                 }
+            ]
+        };
+
+        // Función para cambiar de vistas simulando una App (SPA)
+        function showView(viewId) {
+            // Ocultar todas con transición suave
+            document.querySelectorAll('.view-section').forEach(el => {
+                el.classList.remove('active', 'fade-in');
+            });
+
+            // Ocultar animaciones infantiles al volver a Home
+            if (viewId === 'home-view') {
+                const stickers = document.getElementById('kids-stickers');
+                if (stickers) {
+                    stickers.classList.add('hidden');
+                    stickers.innerHTML = '';
+                }
+            }
+
+            // Mostrar solicitada
+            const view = document.getElementById(viewId);
+            view.classList.add('active', 'fade-in');
+            window.scrollTo({ top: 0, behavior: 'smooth' }); // Regresar arriba suavemente
+        }
+
+        // Función para inyectar los datos del evento seleccionado
+        function openCategory(catId) {
+            const data = eventData[catId] || defaultData;
+            
+            // Control de animaciones infantiles
+            const stickersContainer = document.getElementById('kids-stickers');
+            if (catId === 'infantiles') {
+                stickersContainer.innerHTML = '';
+                stickersContainer.classList.remove('hidden');
                 
-                html += `
-                    <div>
-                        <!-- Textos compactos -->
-                        <h3 class="text-2xl font-bold text-white mb-1">${pkg.name}</h3>
-                        <div class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-violet-400 mb-4">${pkg.price}</div>
+                // Personajes personalizados usando SVG puro para que nunca se rompan
+                const characterSVGs = [
+                    // Spiderman (Máscara)
+                    `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-[0_10px_10px_rgba(0,0,0,0.5)]"><ellipse cx="50" cy="50" rx="40" ry="48" fill="#E23636" stroke="#000" stroke-width="2"/><path d="M 45 40 Q 20 25 15 50 Q 25 65 45 60 Z" fill="#fff" stroke="#000" stroke-width="3"/><path d="M 55 40 Q 80 25 85 50 Q 75 65 55 60 Z" fill="#fff" stroke="#000" stroke-width="3"/><line x1="50" y1="2" x2="50" y2="98" stroke="#000" stroke-width="1.5" /><line x1="10" y1="50" x2="90" y2="50" stroke="#000" stroke-width="1.5" /><path d="M 20 25 Q 50 40 80 25" fill="none" stroke="#000" stroke-width="1.5"/><path d="M 20 75 Q 50 60 80 75" fill="none" stroke="#000" stroke-width="1.5"/></svg>`,
+                    
+                    // Escudo Capitán América (Avengers)
+                    `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-[0_10px_10px_rgba(0,0,0,0.5)]"><circle cx="50" cy="50" r="45" fill="#E23636" /><circle cx="50" cy="50" r="35" fill="#FFFFFF" /><circle cx="50" cy="50" r="25" fill="#E23636" /><circle cx="50" cy="50" r="15" fill="#0051BA" /><polygon points="50,38 53,46 62,46 55,51 58,59 50,54 42,59 45,51 38,46 47,46" fill="#FFFFFF" /></svg>`,
+                    
+                    // Mickey Mouse (Disney)
+                    `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-[0_10px_10px_rgba(0,0,0,0.5)]" fill="#1a1a1a"><circle cx="50" cy="60" r="30" /><circle cx="20" cy="20" r="22" /><circle cx="80" cy="20" r="22" /></svg>`,
+                    
+                    // Corona de Princesa (Disney Princesses)
+                    `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-[0_10px_10px_rgba(0,0,0,0.5)]"><path d="M 10 80 L 15 30 L 35 55 L 50 15 L 65 55 L 85 30 L 90 80 Z" fill="#FFD700" stroke="#DAA520" stroke-width="2" stroke-linejoin="round"/><circle cx="50" cy="10" r="5" fill="#FF1493" /><circle cx="15" cy="25" r="4" fill="#00BFFF" /><circle cx="85" cy="25" r="4" fill="#00BFFF" /><circle cx="50" cy="65" r="6" fill="#FF1493" /></svg>`,
+                    
+                    // Bluey (Perro Azul)
+                    `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-[0_10px_10px_rgba(0,0,0,0.5)]"><polygon points="25,35 15,10 35,25" fill="#004D80" /><polygon points="75,35 85,10 65,25" fill="#004D80" /><rect x="25" y="30" width="50" height="55" rx="15" fill="#72C6E8" /><rect x="35" y="55" width="45" height="30" rx="10" fill="#E8D19D" /><circle cx="40" cy="45" r="8" fill="white" /><circle cx="42" cy="45" r="3" fill="black" /><circle cx="65" cy="45" r="8" fill="white" /><circle cx="63" cy="45" r="3" fill="black" /><ellipse cx="65" cy="60" rx="8" ry="6" fill="black" /><path d="M 55 75 Q 65 80 70 75" fill="none" stroke="black" stroke-width="2"/></svg>`,
+
+                    // Pelota de Pixar (Toy Story)
+                    `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-[0_10px_10px_rgba(0,0,0,0.5)]"><circle cx="50" cy="50" r="45" fill="#FFCC00" /><path d="M 18 18 Q 50 40 82 18" fill="none" stroke="#0051BA" stroke-width="10" stroke-linecap="round"/><path d="M 18 82 Q 50 60 82 82" fill="none" stroke="#0051BA" stroke-width="10" stroke-linecap="round"/><polygon points="50,30 55,45 70,45 58,55 62,70 50,60 38,70 42,55 30,45 45,45" fill="#EE0000" /></svg>`,
+
+                    // Mike Wazowski (Monsters Inc)
+                    `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-[0_10px_10px_rgba(0,0,0,0.5)]"><circle cx="50" cy="50" r="45" fill="#88E060" /><circle cx="50" cy="45" r="25" fill="#FFF" /><circle cx="50" cy="45" r="12" fill="#20B2AA" /><circle cx="50" cy="45" r="5" fill="#000" /><circle cx="48" cy="43" r="2" fill="#FFF" /><path d="M 30 75 Q 50 90 70 75" fill="none" stroke="#00512C" stroke-width="3" stroke-linecap="round"/><path d="M 25 25 Q 15 10 20 5 Q 30 15 35 20 Z" fill="#E8F48C" stroke="#00512C" stroke-width="1"/><path d="M 75 25 Q 85 10 80 5 Q 70 15 65 20 Z" fill="#E8F48C" stroke="#00512C" stroke-width="1"/></svg>`,
+
+                    // Ojo de Minion (Mi Villano Favorito / Illumination)
+                    `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-[0_10px_10px_rgba(0,0,0,0.5)]"><circle cx="50" cy="50" r="45" fill="#FFD700" /><rect x="5" y="40" width="90" height="20" fill="#333" /><circle cx="50" cy="50" r="30" fill="#CCC" stroke="#999" stroke-width="4" /><circle cx="50" cy="50" r="22" fill="#FFF" /><circle cx="50" cy="50" r="9" fill="#8B4513" /><circle cx="50" cy="50" r="4" fill="#000" /><circle cx="47" cy="47" r="2" fill="#FFF" /></svg>`,
+
+                    // Copo de Nieve (Frozen)
+                    `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-[0_10px_10px_rgba(0,0,0,0.5)]"><g stroke="#E0F7FA" stroke-width="6" stroke-linecap="round"><line x1="50" y1="5" x2="50" y2="95"/><line x1="5" y1="50" x2="95" y2="50"/><line x1="18" y1="18" x2="82" y2="82"/><line x1="18" y1="82" x2="82" y2="18"/><circle cx="50" cy="50" r="15" fill="none" /></g></svg>`,
+
+                    // Estrella Feliz (Gamer / Mario Bros)
+                    `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-[0_10px_10px_rgba(0,0,0,0.5)]"><polygon points="50,5 61,35 93,35 67,54 77,85 50,67 23,85 33,54 7,35 39,35" fill="#FFD700" stroke="#FFA500" stroke-width="2"/><line x1="40" y1="45" x2="40" y2="55" stroke="#000" stroke-width="4" stroke-linecap="round"/><line x1="60" y1="45" x2="60" y2="55" stroke="#000" stroke-width="4" stroke-linecap="round"/></svg>`
+                ];
+                
+                const numStickers = 18; // Incrementado para más variedad y presencia en pantalla
+                
+                for (let i = 0; i < numStickers; i++) {
+                    const el = document.createElement('div');
+                    const isLarge = Math.random() > 0.5;
+                    el.className = `sticker-anim absolute ${isLarge ? 'w-20 h-20 md:w-28 md:h-28' : 'w-16 h-16 md:w-20 md:h-20'}`;
+                    el.innerHTML = characterSVGs[Math.floor(Math.random() * characterSVGs.length)];
+                    
+                    el.style.left = Math.random() * 90 + 'vw';
+                    el.style.animationDuration = (Math.random() * 10 + 12) + 's';
+                    el.style.animationDelay = (Math.random() * 10) + 's';
+                    
+                    stickersContainer.appendChild(el);
+                }
+            } else {
+                stickersContainer.classList.add('hidden');
+                stickersContainer.innerHTML = '';
+            }
+
+            // Inyectar Textos e Imagen de Cabecera
+            document.getElementById('cat-title').innerText = data.title;
+            document.getElementById('cat-subtitle').innerText = data.subtitle;
+            document.getElementById('banner-bg').style.backgroundImage = `url('${data.image}')`;
+
+            // Renderizar Paquetes
+            const container = document.getElementById('packages-container');
+            container.innerHTML = ''; // Limpiar anteriores
+
+            data.packages.forEach((pkg, index) => {
+                // Destacar paquete principal
+                const isFeatured = pkg.featured ? 'border-pink-400 border-2 transform md:-translate-y-4 shadow-[0_0_40px_rgba(244,114,182,0.3)]' : 'border-white/10 mt-0';
+                const badge = pkg.featured ? `<div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-pink-500 to-orange-500 text-white text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest shadow-lg">Más Vendido</div>` : '';
+                
+                // Asegurar contraste del texto en el mockup del celular
+                const isDarkBg = ['#2c2c2c', '#240046', '#343a40', '#03045e', '#2a0800'].includes(pkg.visual.bg);
+                const textColor = isDarkBg ? '#ffffff' : '#1a1a1a';
+
+                const cardHTML = `
+                    <div class="glass relative rounded-[2rem] p-6 md:p-8 flex flex-col h-full fade-in ${isFeatured}" style="animation-delay: ${index * 0.15}s;">
+                        ${badge}
+                        <h3 class="text-3xl font-bold mb-2">${pkg.name}</h3>
+                        <p class="text-sm text-gray-300 mb-6 h-10">${pkg.desc}</p>
                         
-                        <!-- Mini Celular Decorativo (Más pequeño: w-20 h-40) -->
-                        <div class="flex justify-center mb-4">
-                            <div class="w-20 h-40 bg-gray-900 rounded-2xl border-[4px] border-gray-800 shadow-xl relative overflow-hidden flex flex-col items-center">
-                                <div class="w-8 h-2 bg-black absolute top-0 rounded-b z-20"></div>
-                                <div class="w-full h-full bg-gradient-to-b from-gray-800 to-black text-white p-2 pt-6 text-center flex flex-col justify-center items-center relative">
-                                    <div class="text-[10px] font-bold mb-1 leading-tight">${pkg.visual.title}</div>
-                                    <div class="w-8 h-8 rounded-full bg-gray-700/50 flex items-center justify-center mb-2">
-                                        <i class="fas fa-heart text-pink-500 text-sm animate-pulse"></i>
-                                    </div>
-                                    <div class="space-y-1 w-full px-1">
-                                        <div class="h-1 bg-gray-700 rounded w-full"></div>
-                                        <div class="h-1 bg-gray-700 rounded w-3/4 mx-auto"></div>
+                        <div class="text-5xl font-black mb-8 text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-orange-400">
+                            ${pkg.price} <span class="text-lg font-medium text-gray-400">MXN</span>
+                        </div>
+
+                        <!-- Mini Mockup de Celular y Botón Claro -->
+                        <div class="mb-8 p-5 bg-white/5 rounded-[2rem] border border-white/5 relative flex flex-col items-center">
+                            
+                            <div class="phone-mockup mb-5 shadow-xl">
+                                <div class="phone-notch"></div>
+                                <div class="phone-screen" style="background: ${data.theme}">
+                                    <div style="background: ${pkg.visual.bg}; color: ${textColor};" class="w-full h-full rounded-2xl flex flex-col items-center justify-center p-3 shadow-[inset_0_2px_10px_rgba(0,0,0,0.1)]">
+                                        <i class="fa-solid ${pkg.visual.icon} text-3xl mb-3 opacity-90"></i>
+                                        <h4 class="font-bold text-[11px] uppercase tracking-wide leading-tight mb-2">${pkg.visual.title}</h4>
+                                        <div class="w-12 h-1 bg-current opacity-30 rounded mb-3"></div>
+                                        <div class="bg-current text-white/90 px-3 py-1.5 rounded-md text-[9px] font-bold mix-blend-difference uppercase tracking-wider">${pkg.visual.element}</div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Botón de Demo (Compacto) -->
-                        <div class="text-center mb-5">
-                            <button onclick="abrirDemo('${pkg.visual.demoUrl}')" class="w-full bg-white text-gray-900 font-bold py-2.5 px-4 rounded-xl hover:scale-105 transition duration-300 shadow-[0_0_15px_rgba(255,255,255,0.2)] flex items-center justify-center gap-2 text-sm">
-                                <i class="fas fa-play-circle text-lg text-pink-500"></i> Ver Demo
+                            <!-- Botón real y explícito para Demo -->
+                            <button onclick="openDemo('${pkg.name}', '${pkg.demoUrl || ''}')" class="w-full bg-gradient-to-r from-gray-800 to-gray-900 hover:from-pink-600 hover:to-orange-500 border border-white/20 text-white py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-[0_5px_15px_rgba(0,0,0,0.3)] hover:shadow-[0_0_20px_rgba(255,65,108,0.4)] active:scale-95">
+                                <i class="fa-solid fa-mobile-screen text-pink-300"></i> Ver Demo Interactivo
                             </button>
+
+                            <!-- Nota de personalización de objeción -->
+                            <div class="mt-4 w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-xs text-gray-300 text-left leading-relaxed">
+                                <span class="text-pink-400 font-bold block mb-1"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i> 100% Personalizable</span>
+                                El demo es solo un ejemplo. Tú eliges la paleta de colores, fotos, música y la información de tu evento.
+                            </div>
                         </div>
-                        
-                        <!-- Lista de Características (Compacta) -->
-                        <ul class="space-y-2 mb-6">
-                            ${pkg.features.map(f => `
-                                <li class="flex items-start text-gray-300">
-                                    <i class="fas fa-check-circle text-emerald-400 mr-2 mt-0.5 text-xs flex-shrink-0"></i>
-                                    <span class="text-xs font-medium leading-tight">${f}</span>
-                                </li>
-                            `).join('')}
+
+                        <div class="text-xs font-bold uppercase tracking-widest text-pink-300 mb-4">¿Qué incluye?</div>
+                        <ul class="text-sm text-gray-200 mb-10 flex-grow space-y-4">
+                            ${pkg.features.map(f => `<li class="flex items-start leading-tight"><i class="fa-solid fa-circle-check text-green-400 mt-0.5 mr-3 text-base drop-shadow"></i> ${f}</li>`).join('')}
                         </ul>
+
+                        <button onclick="contratar('${pkg.name}', '${data.title}')" class="w-full py-4 rounded-full font-bold text-lg text-white transition-all duration-300 
+                            ${pkg.featured ? 'bg-gradient-to-r from-pink-500 to-orange-500 hover:shadow-[0_10px_20px_rgba(244,114,182,0.4)] hover:-translate-y-1' : 'glass hover:bg-white/20 hover:-translate-y-1'}">
+                            Elegir ${pkg.name}
+                        </button>
                     </div>
-                    
-                    <!-- Botón de Compra -->
-                    <button onclick="window.open('https://ig.me/m/usuario_de_prueba', '_blank')" class="w-full py-3 rounded-lg font-bold text-sm transition duration-300 flex items-center justify-center gap-2 ${isRecommended ? 'bg-gradient-to-r from-pink-500 to-violet-500 text-white hover:opacity-90 shadow-md' : 'bg-white/5 text-white hover:bg-white/10 border border-white/10'}">
-                        Elegir ${pkg.name} <i class="fas fa-arrow-right text-xs"></i>
-                    </button>
                 `;
-                
-                card.innerHTML = html;
-                packagesGrid.appendChild(card);
+                container.innerHTML += cardHTML;
             });
-            
-            document.getElementById('vitrina').classList.add('hidden');
-            document.getElementById('paquetes').classList.remove('hidden');
-            document.getElementById('paquetes').classList.add('flex');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            showView('packages-view');
         }
 
-        function volver() {
-            document.getElementById('paquetes').classList.add('hidden');
-            document.getElementById('paquetes').classList.remove('flex');
-            document.getElementById('vitrina').classList.remove('hidden');
-            document.getElementById('main-container').style.background = 'transparent';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        function contratar(paquete, evento) {
+            // Link a mensajes directos de Instagram. 
+            const username = "usuario_de_prueba"; // Reemplaza esto con tu usuario cuando tengas el link
+            const url = `https://ig.me/m/${username}`;
+            window.open(url, '_blank');
         }
 
-        function abrirDemo(demoUrl) {
+        // --- FUNCIONES PARA LA DEMOSTRACIÓN EN VIVO ---
+        
+        function openDemo(paqueteNombre, demoUrl) {
             const modal = document.getElementById('demo-modal');
+            const modalContent = document.getElementById('demo-modal-content');
             const iframe = document.getElementById('demo-iframe');
+            const loader = document.getElementById('demo-loader');
             
-            iframe.src = demoUrl;
+            document.getElementById('demo-title').innerText = "Paquete " + paqueteNombre;
+            loader.style.display = 'flex';
             
+            if (demoUrl) {
+                // Si el paquete tiene un link real configurado, lo carga
+                iframe.src = demoUrl;
+            } else {
+                // Si no, carga la pantalla de "Próximamente" o prueba
+                const dummyHtml = `
+                    <!DOCTYPE html>
+                    <html>
+                    <body style='margin:0; height: 100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; background:linear-gradient(45deg, #41295a, #ff416c); color:white; font-family:sans-serif; text-align:center; padding: 20px;'>
+                        <h1 style='font-size: 24px; margin-bottom: 10px;'>¡Próximamente! 🎉</h1>
+                        <p style='font-size: 14px; opacity: 0.9; max-width: 80%;'>Estamos preparando este demo.<br><br>Aquí se cargará tu invitación interactiva con música, mapas y botones de confirmación.</p>
+                        <button style='margin-top: 30px; padding: 12px 24px; background: white; color: #ff416c; border: none; border-radius: 30px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2);'>Entendido</button>
+                    </body>
+                    </html>
+                `;
+                iframe.src = 'data:text/html;charset=utf-8,' + encodeURIComponent(dummyHtml);
+            }
+
+            // Animación de entrada
             modal.classList.remove('hidden');
             modal.classList.add('flex');
             
+            // Pequeño retraso para que el CSS procese la transición
             setTimeout(() => {
-                modal.querySelector('div').classList.remove('scale-95', 'opacity-0');
-                modal.querySelector('div').classList.add('scale-100', 'opacity-100');
+                modal.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-95');
+                modalContent.classList.add('scale-100');
             }, 10);
         }
 
-        function cerrarDemo() {
+        function closeDemo() {
             const modal = document.getElementById('demo-modal');
+            const modalContent = document.getElementById('demo-modal-content');
             const iframe = document.getElementById('demo-iframe');
             
-            modal.querySelector('div').classList.remove('scale-100', 'opacity-100');
-            modal.querySelector('div').classList.add('scale-95', 'opacity-0');
+            // Animación de salida
+            modal.classList.add('opacity-0');
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-95');
             
             setTimeout(() => {
                 modal.classList.add('hidden');
                 modal.classList.remove('flex');
-                iframe.src = ''; 
-            }, 300);
+                iframe.src = ""; // Vaciamos el iframe para detener cualquier música o video que estuviera sonando
+            }, 300); // 300ms es lo que dura la transición CSS
         }
+
+        // Cerrar modal al hacer clic fuera del "celular"
+        document.getElementById('demo-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeDemo();
+            }
+        });
     </script>
 </body>
 </html>
