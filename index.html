@@ -897,9 +897,8 @@
         }
 
         function contratar(paquete, evento) {
-            const telefono = "525545185299"; // Código de país (52) + 10 dígitos obligatorios para que no abra SMS
-            const mensaje = `¡Hola! Me interesa el paquete *${paquete}* para mi evento de *${evento}*.`;
-            const url = `https://api.whatsapp.com/send?phone=${telefono}&text=${encodeURIComponent(mensaje)}`;
+            // Redirigir a Instagram Direct Messages para mantener la venta en la misma red social
+            const url = `https://ig.me/m/nomasconfirma`;
             window.open(url, '_blank');
         }
 
